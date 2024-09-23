@@ -1,0 +1,46 @@
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+!.mvn/wrapper/maven-wrapper.jar
+.flattened-pom.xml
+
+# STS ignore
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+# eclipse ignore
+.settings/
+
+# IntelliJ IDEA ignore
+.idea
+*.iws
+*.iml
+*.ipr
+
+# visual-studio-code ignore
+.vscode/
+
+# NetBeans ignore
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# alibaba develop ignore
+out/
