@@ -70,14 +70,14 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.alibaba.yuntu.me.address.search.Application</mainClass>
+                            <mainClass>com.radiance.ai.assistant.Application</mainClass>
                             <!-- 如果不加这一句则依赖的SNAPSHOT的jar包就会表现为MANIFEST.MF中的
                            Class-Path: lib/facede-user-1.0-20160512.093945-1.jar
                            但是打包到../lib/facede-user-1.0-SNAPSHOT.jar下面包,这样就会出现找不到类的情况 -->
                             <useUniqueVersions>false</useUniqueVersions>
                         </manifest>
                     </archive>
-                    <finalName>yuntu-me-address-search-local</finalName>
+                    <finalName>ai-assistant</finalName>
                 </configuration>
             </plugin>
             <!--拷贝依赖到lib目录-->
@@ -108,8 +108,8 @@
                 <configuration>
                     <executable>false</executable>
                     <excludeDevtools>true</excludeDevtools>
-                    <mainClass>com.alibaba.yuntu.me.address.search.Application</mainClass>
-                    <finalName>yuntu-me-address-search</finalName>
+                    <mainClass>com.radiance.ai.assistant.Application</mainClass>
+                    <finalName>ai-assistant</finalName>
                 </configuration>
                 <executions>
                     <execution>

@@ -11,10 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0.0
  */
 @SpringBootApplication
-public class AiAssistantApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(AiAssistantApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }

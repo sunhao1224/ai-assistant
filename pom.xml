@@ -84,6 +84,8 @@
         <hanlp.version>portable-1.8.4</hanlp.version>
         <easyexcel.version>3.3.2</easyexcel.version>
 
+        <mysql-connector-j.version>9.0.0</mysql-connector-j.version>
+        <mybatis-plus-boot-starter.version>3.5.8</mybatis-plus-boot-starter.version>
         <!-- 豆包接入 -->
         <volcengine-java-sdk-ark-runtime.version>0.1.129</volcengine-java-sdk-ark-runtime.version>
         <volcengine-java-sdk-ark.version>0.1.129</volcengine-java-sdk-ark.version>
@@ -358,6 +360,16 @@
                 <artifactId>easyexcel</artifactId>
                 <version>${easyexcel.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql-connector-j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
 
             <!-- 豆包接入 -->
             <dependency>
@@ -365,47 +377,6 @@
                 <artifactId>volcengine-java-sdk-ark-runtime</artifactId>
                 <version>${volcengine-java-sdk-ark-runtime.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>com.volcengine</groupId>-->
-<!--                <artifactId>volcengine-java-sdk-ark</artifactId>-->
-<!--                <version>${volcengine-java-sdk-ark.version}</version>-->
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <artifactId>okio</artifactId>-->
-<!--                        <groupId>com.squareup.okio</groupId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                <artifactId>jackson-databind</artifactId>-->
-<!--                <version>${jackson.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.squareup.retrofit2</groupId>-->
-<!--                <artifactId>retrofit</artifactId>-->
-<!--                <version>${retrofit.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.reactivex.rxjava2</groupId>-->
-<!--                <artifactId>rxjava</artifactId>-->
-<!--                <version>${rxjava2.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.squareup.retrofit2</groupId>-->
-<!--                <artifactId>adapter-rxjava2</artifactId>-->
-<!--                <version>${retrofit.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.squareup.retrofit2</groupId>-->
-<!--                <artifactId>converter-jackson</artifactId>-->
-<!--                <version>${retrofit.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.squareup.okhttp3</groupId>-->
-<!--                <artifactId>okhttp</artifactId>-->
-<!--                <version>${okhttp3-version}</version>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
