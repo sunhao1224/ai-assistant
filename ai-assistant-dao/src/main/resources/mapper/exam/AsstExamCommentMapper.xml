@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.radiance.ai.assistant.mapper.exam.AsstExamCommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO">
+        <result column="id" property="id"/>
+        <result column="asst_exam_answer_id" property="asstExamAnswerId"/>
+        <result column="asst_info_teacher_id" property="asstInfoTeacherId"/>
+        <result column="type" property="type"/>
+        <result column="group" property="group"/>
+        <result column="original_text" property="originalText"/>
+        <result column="comment" property="comment"/>
+        <result column="creator" property="creator"/>
+        <result column="data_status" property="dataStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="finish_time" property="finishTime"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,
+        asst_exam_answer_id,
+        asst_info_teacher_id,
+        type,
+        `group`,
+        original_text,
+        comment,
+        creator,
+        data_status,
+        create_time,
+        update_time,
+        finish_time
+    </sql>
+
+    <!-- 列表查询 -->
+    <select id="list" resultMap="BaseResultMap"
+            parameterType="com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM asst_exam_comment
+        <where>
+            <if test="null != data.id">
+                AND id = #{data.id}
+            </if>
+            <if test="null != data.asstExamAnswerId">
+                AND asst_exam_answer_id = #{data.asstExamAnswerId}
+            </if>
+            <if test="null != data.asstInfoTeacherId">
+                AND asst_info_teacher_id = #{data.asstInfoTeacherId}
+            </if>
+            <if test="null != data.type">
+                AND type = #{data.type}
+            </if>
+            <if test="null != data.group and '' != data.group">
+                AND `group` = #{data.group}
+            </if>
+            <if test="null != data.originalText and '' != data.originalText">
+                AND original_text = #{data.originalText}
+            </if>
+            <if test="null != data.comment and '' != data.comment">
+                AND comment = #{data.comment}
+            </if>
+            <if test="null != data.creator and '' != data.creator">
+                AND creator = #{data.creator}
+            </if>
+            <if test="null != data.dataStatus">
+                AND data_status = #{data.dataStatus}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <!-- 批量新增 -->
+    <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO">
+        INSERT INTO asst_exam_comment(
+        asst_exam_answer_id,
+        asst_info_teacher_id,
+            type,
+            `group`,
+        original_text,
+        comment,
+            creator,
+            data_status,
+            create_time,
+            update_time,
+            finish_time
+        )VALUES
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.asstExamAnswerId},
+            #{item.asstInfoTeacherId},
+            #{item.type},
+            #{item.group},
+            #{item.originalText},
+            #{item.comment},
+            #{item.creator},
+            #{item.dataStatus},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.finishTime}
+        </foreach>
+    </insert>
+
+    <!-- 批量更新 -->
+    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO">
+        <foreach collection="list" item="item" separator=",">
+            UPDATE asst_exam_comment
+            <set>
+                <if test="null != item.asstExamAnswerId">
+                    ,asst_exam_answer_id = #{item.asstExamAnswerId}
+                </if>
+                <if test="null != item.asstInfoTeacherId">
+                    ,asst_info_teacher_id = #{item.asstInfoTeacherId}
+                </if>
+                <if test="null != item.type">
+                    ,type = #{item.type}
+                </if>
+                <if test="null != item.group and '' != item.group">
+                    ,`group` = #{item.group}
+                </if>
+                <if test="null != item.originalText and '' != item.originalText">
+                    ,original_text = #{item.originalText}
+                </if>
+                <if test="null != item.comment and '' != item.comment">
+                    ,comment = #{item.comment}
+                </if>
+                <if test="null != item.creator and '' != item.creator">
+                    ,creator = #{item.creator}
+                </if>
+                <if test="null != item.createTime">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="null != item.updateTime">
+                    ,update_time = #{item.updateTime}
+                </if>
+                <if test="null != item.finishTime">
+                    ,finish_time = #{item.finishTime}
+                </if>
+            </set>
+            <where>
+                id = #{item.id}
+                <if test="null != item.dataStatus">
+                    AND data_status = #{item.dataStatus}
+                </if>
+            </where>
+        </foreach>
+    </update>
+
+    <!-- 批量逻辑删除 -->
+    <update id="removeBatch">
+        UPDATE asst_exam_comment
+        <set>
+            update_time = now(),
+            finish_time = now(),
+            data_status = 1
+        </set>
+        WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 批量物理删除 -->
+    <delete id="deleteBatch">
+        DELETE FROM asst_exam_comment WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

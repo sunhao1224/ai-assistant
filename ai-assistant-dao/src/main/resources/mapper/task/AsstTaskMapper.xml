@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.radiance.ai.assistant.mapper.task.AsstTaskMapper">
+
+    <resultMap id="BaseResultMap" type="com.radiance.ai.assistant.domain.dos.task.AsstTaskDO">
+        <result column="id" property="id"/>
+        <result column="asst_exam_paper_id" property="asstExamPaperId"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="group" property="group"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="data_status" property="dataStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="finish_time" property="finishTime"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,
+        asst_exam_paper_id,
+        type,
+        name,
+        `group`,
+        description,
+        status,
+        data_status,
+        create_time,
+        update_time,
+        finish_time
+    </sql>
+
+    <!-- 列表查询 -->
+    <select id="list" resultMap="BaseResultMap"
+            parameterType="com.radiance.ai.assistant.domain.query.task.AsstTaskQuery">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM asst_task
+        <where>
+            <if test="null != data.asstExamPaperId">
+                AND asst_exam_paper_id = #{data.asstExamPaperId}
+            </if>
+            <if test="null != data.type">
+                AND type = #{data.type}
+            </if>
+            <if test="null != data.name and '' != data.name">
+                AND name LIKE concat('%', #{data.name},'%')
+            </if>
+            <if test="null != data.group and '' != data.group">
+                AND `group` = #{data.group}
+            </if>
+            <if test="null != data.description and '' != data.description">
+                AND description = #{data.description}
+            </if>
+            <if test="null != data.status">
+                AND status = #{data.status}
+            </if>
+            <if test="null != data.dataStatus">
+                AND data_status = #{data.dataStatus}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <!-- 获取任务并上锁 -->
+    <select id="getTaskAndLock" resultType="com.radiance.ai.assistant.domain.dos.task.AsstTaskDO">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM asst_task
+        <where>
+            data_status = 0 AND status = 0
+        </where>
+        ORDER BY create_time ASC LIMIT 1 FOR UPDATE
+    </select>
+
+    <!-- 批量新增 -->
+    <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.radiance.ai.assistant.domain.dos.task.AsstTaskDO">
+        INSERT INTO asst_task(
+            asst_exam_paper_id,
+            type,
+            name,
+            `group`,
+            description,
+            status,
+            data_status,
+            create_time,
+            update_time,
+            finish_time
+        )VALUES
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.asstExamPaperId},
+            #{item.type},
+            #{item.name},
+            #{item.group},
+            #{item.description},
+            #{item.status},
+            #{item.dataStatus},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.finishTime}
+        </foreach>
+    </insert>
+
+    <!-- 批量更新 -->
+    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.task.AsstTaskDO">
+        <foreach collection="list" item="item" separator=",">
+            UPDATE asst_task
+            <set>
+                <if test="null != item.asstExamPaperId">
+                    ,asst_exam_paper_id = #{item.asstExamPaperId}
+                </if>
+                <if test="null != item.type">
+                    ,type = #{item.type}
+                </if>
+                <if test="null != item.name and '' != item.name">
+                    ,name = #{item.name}
+                </if>
+                <if test="null != item.group and '' != item.group">
+                    ,`group` = #{item.group}
+                </if>
+                <if test="null != item.description and '' != item.description">
+                    ,description = #{item.description}
+                </if>
+                <if test="null != item.status">
+                    ,status = #{item.status}
+                </if>
+                <if test="null != item.createTime">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="null != item.updateTime">
+                    ,update_time = #{item.updateTime}
+                </if>
+                <if test="null != item.finishTime">
+                    ,finish_time = #{item.finishTime}
+                </if>
+            </set>
+            <where>
+                id = #{item.id}
+                <if test="null != item.dataStatus">
+                    AND data_status = #{item.dataStatus}
+                </if>
+            </where>
+        </foreach>
+    </update>
+
+    <!-- 批量逻辑删除 -->
+    <update id="removeBatch">
+        UPDATE asst_task
+        <set>
+            update_time = now(),
+            finish_time = now(),
+            data_status = 1
+        </set>
+        WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 批量物理删除 -->
+    <delete id="deleteBatch">
+        DELETE FROM asst_task WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

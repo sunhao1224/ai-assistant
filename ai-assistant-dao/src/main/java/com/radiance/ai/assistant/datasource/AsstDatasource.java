@@ -46,7 +46,7 @@ public class AsstDatasource {
             throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
-        bean.setMapperLocations(this.resolveMapperLocations(Arrays.asList("classpath:mapper/*.xml")));
+        bean.setMapperLocations(this.resolveMapperLocations(Arrays.asList("classpath:mapper/*/*.xml")));
         return bean.getObject();
     }
 

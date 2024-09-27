@@ -2,6 +2,7 @@ package com.radiance.ai.assistant;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * AI 助手工程启动类
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2024/9/23 17:45
  * @since 1.0.0
  */
+@EnableScheduling
 @SpringBootApplication
 public class Application {
 

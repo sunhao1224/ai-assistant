@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.radiance.ai.assistant.mapper.exam.AsstExamAnswerMapper">
+
+    <resultMap id="BaseResultMap" type="com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO">
+        <result column="id" property="id"/>
+        <result column="asst_exam_paper_id" property="asstExamPaperId"/>
+        <result column="asst_info_student_id" property="asstInfoStudentId"/>
+        <result column="type" property="type"/>
+        <result column="group" property="group"/>
+        <result column="question" property="question"/>
+        <result column="answer" property="answer"/>
+        <result column="score" property="score"/>
+        <result column="ai_score" property="aiScore"/>
+        <result column="hit_point" property="hitPoint"/>
+        <result column="hit_mask" property="hitMask"/>
+        <result column="ai_tag" property="aiTag"/>
+        <result column="ai_result" property="aiResult"/>
+        <result column="creator" property="creator"/>
+        <result column="data_status" property="dataStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="finish_time" property="finishTime"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,
+        asst_exam_paper_id,
+        asst_info_student_id,
+        type,
+        `group`,
+        question,
+        answer,
+        score,
+        ai_score,
+        hit_point,
+        hit_mask,
+        ai_tag,
+        ai_result,
+        creator,
+        data_status,
+        create_time,
+        update_time,
+        finish_time
+    </sql>
+
+    <!-- 列表查询 -->
+    <select id="list" resultMap="BaseResultMap"
+            parameterType="com.radiance.ai.assistant.domain.query.exam.AsstExamAnswerQuery">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM asst_exam_answer
+        <where>
+            <if test="null != data.id">
+                AND id = #{data.id}
+            </if>
+            <if test="null != data.asstExamPaperId">
+                AND asst_exam_paper_id = #{data.asstExamPaperId}
+            </if>
+            <if test="null != data.asstInfoStudentId">
+                AND asst_info_student_id = #{data.asstInfoStudentId}
+            </if>
+            <if test="null != data.type">
+                AND type = #{data.type}
+            </if>
+            <if test="null != data.group and '' != data.group">
+                AND `group` = #{data.group}
+            </if>
+            <if test="null != data.question and '' != data.question">
+                AND question = #{data.question}
+            </if>
+            <if test="null != data.answer and '' != data.answer">
+                AND answer = #{data.answer}
+            </if>
+            <if test="null != data.score">
+                AND score = #{data.score}
+            </if>
+            <if test="null != data.aiScore">
+                AND ai_score = #{data.aiScore}
+            </if>
+            <if test="null != data.hitPoint">
+                AND hit_point = #{data.hitPoint}
+            </if>
+            <if test="null != data.hitMask and '' != data.hitMask">
+                AND hit_mask = #{data.hitMask}
+            </if>
+            <if test="null != data.aiTag and '' != data.aiTag">
+                AND ai_tag = #{data.aiTag}
+            </if>
+            <if test="null != data.aiResult and '' != data.aiResult">
+                AND ai_result = #{data.aiResult}
+            </if>
+            <if test="null != data.creator and '' != data.creator">
+                AND creator = #{data.creator}
+            </if>
+            <if test="null != data.dataStatus">
+                AND data_status = #{data.dataStatus}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <!-- 批量新增 -->
+    <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO">
+        INSERT INTO asst_exam_answer(
+            asst_exam_paper_id,
+            asst_info_student_id,
+            type,
+            `group`,
+            question,
+            answer,
+            score,
+            ai_score,
+            hit_point,
+            hit_mask,
+            ai_tag,
+            ai_result,
+            creator,
+            data_status,
+            create_time,
+            update_time,
+            finish_time
+        )VALUES
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.asstExamPaperId},
+            #{item.asstInfoStudentId},
+            #{item.type},
+            #{item.group},
+            #{item.question},
+            #{item.answer},
+            #{item.score},
+            #{item.aiScore},
+            #{item.hitPoint},
+            #{item.hitMask},
+            #{item.aiTag},
+            #{item.aiResult},
+            #{item.creator},
+            #{item.dataStatus},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.finishTime}
+        </foreach>
+    </insert>
+
+    <!-- 批量更新 -->
+    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO">
+        <foreach collection="list" item="item" separator=",">
+            UPDATE asst_exam_answer
+            <set>
+                <if test="null != item.asstExamPaperId">
+                    ,asst_exam_paper_id = #{item.asstExamPaperId}
+                </if>
+                <if test="null != item.asstInfoStudentId">
+                    ,asst_info_student_id = #{item.asstInfoStudentId}
+                </if>
+                <if test="null != item.type">
+                    ,type = #{item.type}
+                </if>
+                <if test="null != item.group and '' != item.group">
+                    ,`group` = #{item.group}
+                </if>
+                <if test="null != item.question and '' != item.question">
+                    ,question = #{item.question}
+                </if>
+                <if test="null != item.answer and '' != item.answer">
+                    ,answer = #{item.answer}
+                </if>
+                <if test="null != item.score">
+                    ,score = #{item.score}
+                </if>
+                <if test="null != item.aiScore">
+                    ,ai_score = #{item.aiScore}
+                </if>
+                <if test="null != item.hitPoint">
+                    ,hit_point = #{item.hitPoint}
+                </if>
+                <if test="null != item.hitMask and '' != item.hitMask">
+                    ,hit_mask = #{item.hitMask}
+                </if>
+                <if test="null != item.aiTag and '' != item.aiTag">
+                    ,ai_tag = #{item.aiTag}
+                </if>
+                <if test="null != item.aiResult and '' != item.aiResult">
+                    ,ai_result = #{item.aiResult}
+                </if>
+                <if test="null != item.creator and '' != item.creator">
+                    ,creator = #{item.creator}
+                </if>
+                <if test="null != item.createTime">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="null != item.updateTime">
+                    ,update_time = #{item.updateTime}
+                </if>
+                <if test="null != item.finishTime">
+                    ,finish_time = #{item.finishTime}
+                </if>
+            </set>
+            <where>
+                id = #{item.id}
+                <if test="null != item.dataStatus">
+                    AND data_status = #{item.dataStatus}
+                </if>
+            </where>
+        </foreach>
+    </update>
+
+    <!-- 批量逻辑删除 -->
+    <update id="removeBatch">
+        UPDATE asst_exam_answer
+        <set>
+            update_time = now(),
+            finish_time = now(),
+            data_status = 1
+        </set>
+        WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 批量物理删除 -->
+    <delete id="deleteBatch">
+        DELETE FROM asst_exam_answer WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>
