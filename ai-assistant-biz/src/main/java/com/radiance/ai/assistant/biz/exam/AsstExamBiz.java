@@ -47,6 +47,8 @@ public interface AsstExamBiz {
 
     int paperRemove(List<Long> idList);
 
+    int paperUpload(AsstExamPaperUploadDTO asstExamPaperUploadDTO);
+
     List<AsstExamAnswerDO> answerList(AsstExamAnswerListDTO asstExamAnswerListDTO);
 
     AsstExamAnswerDetailVO answerDetail(AsstExamAnswerDetailDTO asstExamAnswerDetailDTO);

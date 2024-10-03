@@ -97,9 +97,9 @@
             create_time,
             update_time,
             finish_time
-        )VALUES
-        <foreach collection="list" item="item" separator="," open="(" close=")">
-            #{item.asstExamBankId},
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.asstExamBankId},
             #{item.asstInfoTeacherId},
             #{item.type},
             #{item.group},
@@ -111,7 +111,7 @@
             #{item.dataStatus},
             #{item.createTime},
             #{item.updateTime},
-            #{item.finishTime}
+            #{item.finishTime})
         </foreach>
     </insert>
 
@@ -183,6 +183,21 @@
     <!-- 批量物理删除 -->
     <delete id="deleteBatch">
         DELETE FROM asst_exam_paper WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 通过 group 删除数据 -->
+    <delete id="deleteByGroup">
+        DELETE FROM asst_exam_paper WHERE `group` IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByAsstExamBankId">
+        DELETE FROM asst_exam_paper WHERE asst_exam_bank_id IN
         <foreach collection="list" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>

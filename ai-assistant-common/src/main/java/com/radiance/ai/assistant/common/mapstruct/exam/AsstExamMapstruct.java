@@ -113,4 +113,6 @@ public interface AsstExamMapstruct {
     List<AsstExamCommentVO> asstExamCommentDoListConvertToAsstExamCommentVoList(List<AsstExamCommentDO> asstExamCommentDOList);
 
     AsstExamAnswerDetailVO asstExamAnswerDoConvertToAsstExamAnswerDetailVo(AsstExamAnswerDO asstExamAnswerDO);
+
+    AsstExamPaperDO asstExamPaperUploadDtoConvertToAsstExamPaperDo(AsstExamPaperUploadDTO asstExamPaperUploadDTO);
 }

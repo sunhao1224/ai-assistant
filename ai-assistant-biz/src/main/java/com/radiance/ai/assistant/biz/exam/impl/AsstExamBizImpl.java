@@ -7,9 +7,14 @@ import com.radiance.ai.assistant.domain.dos.exam.*;
 import com.radiance.ai.assistant.domain.dto.exam.*;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
 import com.radiance.ai.assistant.domain.vo.exam.AsstExamAnswerDetailVO;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -131,6 +136,41 @@ public class AsstExamBizImpl implements AsstExamBiz {
     @Override
     public int paperRemove(List<Long> idList) {
         return asstExamPaperDAO.removeBatch(idList);
+    }
+
+    @Override
+    public int paperUpload(AsstExamPaperUploadDTO asstExamPaperUploadDTO) {
+        // 先删除当前 group 下的所有数据，一个 group 数据是确定的
+        asstExamPaperDAO.deleteByAsstExamBankId(Collections.singletonList(asstExamPaperUploadDTO.getAsstExamBankId()));
+
+        List<AsstExamPaperDO> list = new ArrayList<>();
+        List<String> questionList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+
+        try (XWPFDocument document = new XWPFDocument(asstExamPaperUploadDTO.getFile().getInputStream())) {
+            // 获取所有段落
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+
+            // 遍历并打印每个段落的文本内容
+            for (XWPFParagraph para : paragraphs) {
+                if (para.getText().startsWith("题目：")) {
+                    questionList.add(para.getText().replaceAll("题目：", ""));
+                }
+                if (para.getText().startsWith("答案：")) {
+                    answerList.add(para.getText().replaceAll("答案：", ""));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < questionList.size(); i++) {
+            AsstExamPaperDO asstExamPaperDO = asstExamMapstruct.asstExamPaperUploadDtoConvertToAsstExamPaperDo(asstExamPaperUploadDTO);
+            asstExamPaperDO.setType(1);
+            asstExamPaperDO.setQuestion(questionList.get(i));
+            asstExamPaperDO.setAnswer(answerList.get(i));
+            list.add(asstExamPaperDO);
+        }
+        return asstExamPaperDAO.insertBatch(list);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.radiance.ai.assistant.web.llm;
 
 import com.radiance.ai.assistant.biz.llm.doubao.DouBaoLlmBiz;
+import com.radiance.ai.assistant.domain.dto.llm.PromptGenerateDTO;
 import com.radiance.ai.assistant.domain.vo.ResponseVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -106,6 +107,11 @@ public class AsstLlmController {
     @GetMapping("/doubao/prompt/generate")
     public ResponseVO doubaoPromptGenerate(@RequestParam(value = "content") String content) {
         return ResponseVO.success(douBaoLlmBiz.promptGenerate(content));
+    }
+
+    @PostMapping("/doubao/prompt/generate")
+    public ResponseVO doubaoPromptGenerate(@RequestBody PromptGenerateDTO promptGenerateDTO) {
+        return ResponseVO.success(douBaoLlmBiz.promptGenerate(promptGenerateDTO.getContent()));
     }
 
 

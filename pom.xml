@@ -86,6 +86,7 @@
 
         <mysql-connector-j.version>9.0.0</mysql-connector-j.version>
         <mybatis-plus-boot-starter.version>3.5.8</mybatis-plus-boot-starter.version>
+        <poi-ooxml.version>4.1.2</poi-ooxml.version>
         <!-- 豆包接入 -->
         <volcengine-java-sdk-ark-runtime.version>0.1.129</volcengine-java-sdk-ark-runtime.version>
         <volcengine-java-sdk-ark.version>0.1.129</volcengine-java-sdk-ark.version>
@@ -369,6 +370,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi-ooxml.version}</version>
             </dependency>
 
             <!-- 豆包接入 -->

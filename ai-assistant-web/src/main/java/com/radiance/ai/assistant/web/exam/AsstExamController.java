@@ -136,6 +136,12 @@ public class AsstExamController {
         return ResponseVO.success(result);
     }
 
+    @PostMapping("/paper/upload")
+    public ResponseVO paperUpload(@Validated AsstExamPaperUploadDTO asstExamPaperUploadDTO) {
+        int result = asstExamBiz.paperUpload(asstExamPaperUploadDTO);
+        return ResponseVO.success(result > 0 ? "success" : "fail");
+    }
+
     @GetMapping("/answer/list")
     public ResponseVO answerList(AsstExamAnswerListDTO asstExamAnswerListDTO) {
         JSONObject info = new JSONObject();

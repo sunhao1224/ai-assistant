@@ -25,4 +25,8 @@ public interface AsstExamPaperDAO {
 
     int deleteBatch(List<Long> list);
 
+    int deleteByGroup(List<String> list);
+
+    int deleteByAsstExamBankId(List<Long> list);
+
 }

@@ -81,4 +81,14 @@ public class AsstExamPaperDAOImpl implements AsstExamPaperDAO {
         return asstExamPaperMapper.deleteBatch(list);
     }
 
+    @Override
+    public int deleteByGroup(List<String> list) {
+        return asstExamPaperMapper.deleteByGroup(list);
+    }
+
+    @Override
+    public int deleteByAsstExamBankId(List<Long> list) {
+        return asstExamPaperMapper.deleteByAsstExamBankId(list);
+    }
+
 }
