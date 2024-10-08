@@ -37,4 +37,5 @@ public interface AsstExamAnswerMapper {
 
     int deleteBatch(@Param("list") List<Long> list);
 
+    int deleteByAsstExamBankId(List<Long> list);
 }

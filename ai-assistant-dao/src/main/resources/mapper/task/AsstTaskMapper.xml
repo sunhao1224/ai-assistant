@@ -88,8 +88,8 @@
             update_time,
             finish_time
         )VALUES
-        <foreach collection="list" item="item" separator="," open="(" close=")">
-            #{item.asstExamPaperId},
+        <foreach collection="list" item="item" separator=",">
+            (#{item.asstExamPaperId},
             #{item.type},
             #{item.name},
             #{item.group},
@@ -98,7 +98,7 @@
             #{item.dataStatus},
             #{item.createTime},
             #{item.updateTime},
-            #{item.finishTime}
+            #{item.finishTime})
         </foreach>
     </insert>
 

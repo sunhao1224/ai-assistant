@@ -6,7 +6,9 @@ import com.radiance.ai.assistant.dao.exam.*;
 import com.radiance.ai.assistant.domain.dos.exam.*;
 import com.radiance.ai.assistant.domain.dto.exam.*;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
+import com.radiance.ai.assistant.domain.query.exam.AsstExamPaperQuery;
 import com.radiance.ai.assistant.domain.vo.exam.AsstExamAnswerDetailVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * AI 助手业务接口实现类
@@ -25,6 +29,7 @@ import java.util.List;
  * @date 2024/9/25 17:43
  * @since 1.0.0
  */
+@Slf4j
 @Service
 public class AsstExamBizImpl implements AsstExamBiz {
 
@@ -140,7 +145,7 @@ public class AsstExamBizImpl implements AsstExamBiz {
 
     @Override
     public int paperUpload(AsstExamPaperUploadDTO asstExamPaperUploadDTO) {
-        // 先删除当前 group 下的所有数据，一个 group 数据是确定的
+        // 先删除当前 asst_exam_band_id 下的所有数据
         asstExamPaperDAO.deleteByAsstExamBankId(Collections.singletonList(asstExamPaperUploadDTO.getAsstExamBankId()));
 
         List<AsstExamPaperDO> list = new ArrayList<>();
@@ -161,7 +166,7 @@ public class AsstExamBizImpl implements AsstExamBiz {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("read word error: {}", e.getMessage(), e);
         }
         for (int i = 0; i < questionList.size(); i++) {
             AsstExamPaperDO asstExamPaperDO = asstExamMapstruct.asstExamPaperUploadDtoConvertToAsstExamPaperDo(asstExamPaperUploadDTO);
@@ -202,6 +207,49 @@ public class AsstExamBizImpl implements AsstExamBiz {
     @Override
     public int answerRemove(List<Long> idList) {
         return asstExamAnswerDAO.removeBatch(idList);
+    }
+
+    @Override
+    public int answerUpload(AsstExamAnswerUploadDTO asstExamAnswerUploadDTO) {
+        // 先删除当前 asst_exam_band_id 下的所有数据
+        asstExamAnswerDAO.deleteByAsstExamBankId(Collections.singletonList(asstExamAnswerUploadDTO.getAsstExamBankId()));
+
+        // 查询试卷表题库所有试题
+        List<AsstExamPaperDO> asstExamPaperDOList = asstExamPaperDAO.list(AsstExamPaperQuery.builder().asstExamBankId(asstExamAnswerUploadDTO.getAsstExamBankId()).build());
+        // 把 question 放在 Map 里面
+        Map<String, AsstExamPaperDO> asstExamPaperDOMap = asstExamPaperDOList.stream().collect(Collectors.toMap(AsstExamPaperDO::getQuestion, e -> e));
+
+        List<AsstExamAnswerDO> list = new ArrayList<>();
+        List<String> questionList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+        try (XWPFDocument document = new XWPFDocument(asstExamAnswerUploadDTO.getFile().getInputStream())) {
+            // 获取所有段落
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+
+            // 遍历并打印每个段落的文本内容
+            for (XWPFParagraph para : paragraphs) {
+                if (para.getText().startsWith("题目：")) {
+                    questionList.add(para.getText().replaceAll("题目：", ""));
+                }
+                if (para.getText().startsWith("答案：")) {
+                    answerList.add(para.getText().replaceAll("答案：", ""));
+                }
+            }
+        } catch (Exception e) {
+            log.info("read word error: {}", e.getMessage(), e);
+        }
+
+        for (int i = 0; i < questionList.size(); i++) {
+           if (asstExamPaperDOMap.containsKey(questionList.get(i))) {
+               AsstExamAnswerDO asstExamAnswerDO = asstExamMapstruct.asstExamAnswerUploadDtoConvertToAsstExamAnswerDo(asstExamAnswerUploadDTO);
+               asstExamAnswerDO.setAsstExamPaperId(asstExamPaperDOMap.get(questionList.get(i)).getId());
+               asstExamAnswerDO.setType(1);
+               asstExamAnswerDO.setQuestion(questionList.get(i));
+               asstExamAnswerDO.setAnswer(answerList.get(i));
+               list.add(asstExamAnswerDO);
+           }
+        }
+        return asstExamAnswerDAO.insertBatch(list);
     }
 
     @Override

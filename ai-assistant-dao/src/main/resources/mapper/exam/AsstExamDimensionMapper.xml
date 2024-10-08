@@ -71,8 +71,8 @@
             update_time,
             finish_time
         )VALUES
-        <foreach collection="list" item="item" separator="," open="(" close=")">
-            #{item.type},
+        <foreach collection="list" item="item" separator=",">
+            (#{item.type},
             #{item.dimension},
             #{item.firstClassification},
             #{item.secondClassification},
@@ -80,7 +80,7 @@
             #{item.dataStatus},
             #{item.createTime},
             #{item.updateTime},
-            #{item.finishTime}
+            #{item.finishTime})
         </foreach>
     </insert>
 

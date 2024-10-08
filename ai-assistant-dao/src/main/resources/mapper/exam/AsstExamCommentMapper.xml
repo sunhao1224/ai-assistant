@@ -86,8 +86,8 @@
             update_time,
             finish_time
         )VALUES
-        <foreach collection="list" item="item" separator="," open="(" close=")">
-            #{item.asstExamAnswerId},
+        <foreach collection="list" item="item" separator=",">
+            (#{item.asstExamAnswerId},
             #{item.asstInfoTeacherId},
             #{item.type},
             #{item.group},
@@ -97,7 +97,7 @@
             #{item.dataStatus},
             #{item.createTime},
             #{item.updateTime},
-            #{item.finishTime}
+            #{item.finishTime})
         </foreach>
     </insert>
 

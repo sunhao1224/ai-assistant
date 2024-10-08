@@ -25,4 +25,5 @@ public interface AsstExamAnswerDAO {
 
     int deleteBatch(List<Long> list);
 
+    int deleteByAsstExamBankId(List<Long> list);
 }

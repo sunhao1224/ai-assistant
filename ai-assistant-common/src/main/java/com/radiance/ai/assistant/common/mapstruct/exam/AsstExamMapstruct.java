@@ -82,6 +82,8 @@ public interface AsstExamMapstruct {
 
     List<AsstExamPaperVO> asstExamPaperDoListConvertToAsstExamPaperVoList(List<AsstExamPaperDO> list);
 
+    AsstExamPaperDO asstExamPaperUploadDtoConvertToAsstExamPaperDo(AsstExamPaperUploadDTO asstExamPaperUploadDTO);
+
     AsstExamAnswerQuery asstExamAnswerListDtoConvertToAsstExamAnswerQuery(AsstExamAnswerListDTO asstExamAnswerListDTO);
 
     AsstExamAnswerDO asstExamAnswerInsertDtoConvertToAsstExamAnswerDo(AsstExamAnswerInsertDTO asstExamAnswerInsertDTO);
@@ -96,6 +98,10 @@ public interface AsstExamMapstruct {
     AsstExamAnswerVO asstExamAnswerDoConvertToAsstExamAnswerVo(AsstExamAnswerDO asstExamAnswerDO);
 
     List<AsstExamAnswerVO> asstExamAnswerDoListConvertToAsstExamAnswerVoList(List<AsstExamAnswerDO> asstExamAnswerDOList);
+
+    AsstExamAnswerDO asstExamAnswerUploadDtoConvertToAsstExamAnswerDo(AsstExamAnswerUploadDTO asstExamAnswerUploadDTO);
+
+    AsstExamAnswerDetailVO asstExamAnswerDoConvertToAsstExamAnswerDetailVo(AsstExamAnswerDO asstExamAnswerDO);
 
     AsstExamCommentQuery asstExamCommentListDtoConvertToAsstExamAnswerQuery(AsstExamCommentListDTO asstExamCommentListDTO);
 
@@ -112,7 +118,4 @@ public interface AsstExamMapstruct {
 
     List<AsstExamCommentVO> asstExamCommentDoListConvertToAsstExamCommentVoList(List<AsstExamCommentDO> asstExamCommentDOList);
 
-    AsstExamAnswerDetailVO asstExamAnswerDoConvertToAsstExamAnswerDetailVo(AsstExamAnswerDO asstExamAnswerDO);
-
-    AsstExamPaperDO asstExamPaperUploadDtoConvertToAsstExamPaperDo(AsstExamPaperUploadDTO asstExamPaperUploadDTO);
 }

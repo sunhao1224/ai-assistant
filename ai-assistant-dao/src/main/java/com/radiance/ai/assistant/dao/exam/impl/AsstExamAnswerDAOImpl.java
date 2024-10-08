@@ -81,4 +81,9 @@ public class AsstExamAnswerDAOImpl implements AsstExamAnswerDAO {
         return asstExamAnswerMapper.deleteBatch(list);
     }
 
+    @Override
+    public int deleteByAsstExamBankId(List<Long> list) {
+        return asstExamAnswerMapper.deleteByAsstExamBankId(list);
+    }
+
 }

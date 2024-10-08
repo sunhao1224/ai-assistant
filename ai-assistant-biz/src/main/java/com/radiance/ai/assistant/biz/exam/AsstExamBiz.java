@@ -59,6 +59,8 @@ public interface AsstExamBiz {
 
     int answerRemove(List<Long> idList);
 
+    int answerUpload(AsstExamAnswerUploadDTO asstExamAnswerUploadDTO);
+
     List<AsstExamCommentDO> commentList(AsstExamCommentListDTO asstExamCommentListDTO);
 
     int commentInsert(AsstExamCommentInsertDTO asstExamCommentInsertDTO);

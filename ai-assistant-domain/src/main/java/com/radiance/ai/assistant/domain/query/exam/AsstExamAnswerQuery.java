@@ -24,6 +24,10 @@ public class AsstExamAnswerQuery {
      */
     private Long id;
     /**
+     * 考试题库表主键 ID
+     */
+    private Long asstExamBankId;
+    /**
      * 考试试卷表主键 ID
      */
     private Long asstExamPaperId;

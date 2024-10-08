@@ -2,6 +2,8 @@ package com.radiance.ai.assistant.domain.dto.exam;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -14,12 +16,19 @@ import java.time.LocalDateTime;
 @Data
 public class AsstExamAnswerInsertDTO {
     /**
+     * 考试题库表主键 ID
+     */
+    @NotNull(message = "asstExamBankId 不能为空")
+    private Long asstExamBankId;
+    /**
      * 考试试卷表主键 ID
      */
+    @NotNull(message = "asstExamPaperId 不能为空")
     private Long asstExamPaperId;
     /**
-     * 老师表主键 ID
+     * 学生表主键 ID
      */
+    @NotNull(message = "asstInfoStudentId 不能为空")
     private Long asstInfoStudentId;
     /**
      * 类型
@@ -32,10 +41,12 @@ public class AsstExamAnswerInsertDTO {
     /**
      * 题目
      */
+    @NotBlank(message = "question 不能为空")
     private String question;
     /**
      * 答案
      */
+    @NotBlank(message = "answer 不能为空")
     private String answer;
     /**
      * 得分

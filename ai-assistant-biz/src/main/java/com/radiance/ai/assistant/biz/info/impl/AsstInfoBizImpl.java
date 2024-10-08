@@ -1,6 +1,7 @@
 package com.radiance.ai.assistant.biz.info.impl;
 
 import com.radiance.ai.assistant.biz.info.AsstInfoBiz;
+import com.radiance.ai.assistant.common.exception.runtime.CommonException;
 import com.radiance.ai.assistant.common.mapstruct.info.AsstInfoMapstruct;
 import com.radiance.ai.assistant.dao.info.AsstInfoClassDAO;
 import com.radiance.ai.assistant.dao.info.AsstInfoStudentDAO;
@@ -10,6 +11,7 @@ import com.radiance.ai.assistant.domain.dos.info.AsstInfoClassDO;
 import com.radiance.ai.assistant.domain.dos.info.AsstInfoStudentDO;
 import com.radiance.ai.assistant.domain.dos.info.AsstInfoTeacherDO;
 import com.radiance.ai.assistant.domain.dto.info.*;
+import com.radiance.ai.assistant.domain.enums.ResponseCodeEnum;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -64,9 +66,13 @@ public class AsstInfoBizImpl implements AsstInfoBiz {
     }
 
     @Override
-    public int teacherInsert(AsstInfoTeacherInsertDTO asstInfoTeacherInsertDTO) {
+    public long teacherInsert(AsstInfoTeacherInsertDTO asstInfoTeacherInsertDTO) {
         AsstInfoTeacherDO asstInfoTeacherDO = asstInfoMapstruct.asstInfoTeacherInsertDtoConvertToAsstInfoTeacherDo(asstInfoTeacherInsertDTO);
-        return asstInfoTeacherDAO.insertBatch(Collections.singletonList(asstInfoTeacherDO));
+        int result = asstInfoTeacherDAO.insertBatch(Collections.singletonList(asstInfoTeacherDO));
+        if (result < 1) {
+            throw new CommonException(ResponseCodeEnum.DATA_INSERT_ERROR);
+        }
+        return asstInfoTeacherDO.getId();
     }
 
     @Override
@@ -86,9 +92,13 @@ public class AsstInfoBizImpl implements AsstInfoBiz {
     }
 
     @Override
-    public int studentInsert(AsstInfoStudentInsertDTO asstInfoStudentInsertDTO) {
+    public long studentInsert(AsstInfoStudentInsertDTO asstInfoStudentInsertDTO) {
         AsstInfoStudentDO asstInfoStudentDO = asstInfoMapstruct.asstInfoStudentInsertDtoConvertToAsstInfoStudentDo(asstInfoStudentInsertDTO);
-        return asstInfoStudentDAO.insertBatch(Collections.singletonList(asstInfoStudentDO));
+        int result = asstInfoStudentDAO.insertBatch(Collections.singletonList(asstInfoStudentDO));
+        if (result < 1) {
+            throw new CommonException(ResponseCodeEnum.DATA_INSERT_ERROR);
+        }
+        return asstInfoStudentDO.getId();
     }
 
     @Override

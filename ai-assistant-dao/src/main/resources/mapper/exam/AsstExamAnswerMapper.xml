@@ -25,6 +25,7 @@
 
     <sql id="base_column_list">
         id,
+        asst_exam_bank_id,
         asst_exam_paper_id,
         asst_info_student_id,
         type,
@@ -53,6 +54,9 @@
         <where>
             <if test="null != data.id">
                 AND id = #{data.id}
+            </if>
+            <if test="null != data.asstExamBankId">
+                AND asst_exam_bank_id = #{data.asstExamBankId}
             </if>
             <if test="null != data.asstExamPaperId">
                 AND asst_exam_paper_id = #{data.asstExamPaperId}
@@ -104,6 +108,7 @@
     <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
             parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO">
         INSERT INTO asst_exam_answer(
+            asst_exam_bank_id,
             asst_exam_paper_id,
             asst_info_student_id,
             type,
@@ -122,7 +127,8 @@
             update_time,
             finish_time
         )VALUES
-        <foreach collection="list" item="item" separator="," open="(" close=")">
+        <foreach collection="list" item="item" separator=",">
+            (#{item.asstExamBankId},
             #{item.asstExamPaperId},
             #{item.asstInfoStudentId},
             #{item.type},
@@ -139,7 +145,7 @@
             #{item.dataStatus},
             #{item.createTime},
             #{item.updateTime},
-            #{item.finishTime}
+            #{item.finishTime})
         </foreach>
     </insert>
 
@@ -148,6 +154,9 @@
         <foreach collection="list" item="item" separator=",">
             UPDATE asst_exam_answer
             <set>
+                <if test="null != item.asstExamBankId">
+                    ,asst_exam_bank_id = #{item.asstExamBankId}
+                </if>
                 <if test="null != item.asstExamPaperId">
                     ,asst_exam_paper_id = #{item.asstExamPaperId}
                 </if>
@@ -223,6 +232,14 @@
     <!-- 批量物理删除 -->
     <delete id="deleteBatch">
         DELETE FROM asst_exam_answer WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 通过 asst_exam_bank_id 删除数据 -->
+    <delete id="deleteByAsstExamBankId">
+        DELETE FROM asst_exam_answer WHERE asst_exam_bank_id IN
         <foreach collection="list" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>

@@ -67,8 +67,7 @@ public class AsstInfoController {
 
     @PostMapping("/teacher/insert")
     public ResponseVO teacherInsert(@RequestBody @Validated AsstInfoTeacherInsertDTO asstInfoTeacherInsertDTO) {
-        int result = asstInfoBiz.teacherInsert(asstInfoTeacherInsertDTO);
-        return ResponseVO.success(result == 1 ? "success" : "fail");
+        return ResponseVO.success(asstInfoBiz.teacherInsert(asstInfoTeacherInsertDTO));
     }
 
     @PostMapping("/teacher/update")
@@ -94,8 +93,7 @@ public class AsstInfoController {
 
     @PostMapping("/student/insert")
     public ResponseVO studentInsert(@RequestBody @Validated AsstInfoStudentInsertDTO asstInfoStudentInsertDTO) {
-        int result = asstInfoBiz.studentInsert(asstInfoStudentInsertDTO);
-        return ResponseVO.success(result == 1 ? "success" : "fail");
+        return ResponseVO.success(asstInfoBiz.studentInsert(asstInfoStudentInsertDTO));
     }
 
     @PostMapping("/student/update")

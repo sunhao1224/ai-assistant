@@ -24,7 +24,7 @@ public interface AsstInfoBiz {
 
     List<AsstInfoTeacherDO> teacherList(AsstInfoTeacherListDTO asstInfoTeacherListDTO);
 
-    int teacherInsert(AsstInfoTeacherInsertDTO asstInfoTeacherInsertDTO);
+    long teacherInsert(AsstInfoTeacherInsertDTO asstInfoTeacherInsertDTO);
 
     int teacherUpdate(AsstInfoTeacherUpdateDTO asstInfoTeacherUpdateDTO);
 
@@ -32,7 +32,7 @@ public interface AsstInfoBiz {
 
     List<AsstInfoStudentDO> studentList(AsstInfoStudentListDTO asstInfoStudentListDTO);
 
-    int studentInsert(AsstInfoStudentInsertDTO asstInfoStudentInsertDTO);
+    long studentInsert(AsstInfoStudentInsertDTO asstInfoStudentInsertDTO);
 
     int studentUpdate(AsstInfoStudentUpdateDTO asstInfoStudentUpdateDTO);
 

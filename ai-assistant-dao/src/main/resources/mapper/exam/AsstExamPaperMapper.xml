@@ -196,6 +196,7 @@
         </foreach>
     </delete>
 
+    <!-- 通过 asst_exam_bank_id 删除数据 -->
     <delete id="deleteByAsstExamBankId">
         DELETE FROM asst_exam_paper WHERE asst_exam_bank_id IN
         <foreach collection="list" item="item" separator="," open="(" close=")">
