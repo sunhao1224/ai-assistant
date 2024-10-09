@@ -5,26 +5,30 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 考试试卷-DO
+ * 考试关键词-DO
  *
  * @author juncong.sh@alibaba-inc.com
  * @date 2024/9/26 16:11
  * @since 1.0.0
  */
 @Data
-public class AsstExamPaperVO {
+public class AsstExamKeywordVO {
     /**
      * 主键 ID
      */
     private Long id;
     /**
-     * 考试题库表主键 ID
+     * 考试答题表主键 ID
      */
-    private Long asstExamBankId;
+    private Long asstExamAnswerId;
     /**
-     * 老师表主键 ID
+     * 学生表主键 ID
      */
-    private Long asstInfoTeacherId;
+    private Long asstInfoStudentId;
+    /**
+     * 关键词
+     */
+    private String keyword;
     /**
      * 类型
      */
@@ -34,39 +38,23 @@ public class AsstExamPaperVO {
      */
     private String group;
     /**
-     * 题目
-     */
-    private String question;
-    /**
-     * 答案
-     */
-    private String answer;
-    /**
-     * AI 答案
-     */
-    private String aiAnswer;
-    /**
-     * prompt
-     */
-    private String prompt;
-    /**
-     * 维度
-     */
-    private String dimension;
-    /**
      * 创建人
      */
     private String creator;
     /**
+     * 数据状态：0-未删除，1-已删除
+     */
+    private Integer dataStatus;
+    /**
      * 创建时间
      */
-    private String createTime;
+    private LocalDateTime createTime;
     /**
      * 更新时间
      */
-    private String updateTime;
+    private LocalDateTime updateTime;
     /**
      * 完成时间
      */
-    private String finishTime;
+    private LocalDateTime finishTime;
 }

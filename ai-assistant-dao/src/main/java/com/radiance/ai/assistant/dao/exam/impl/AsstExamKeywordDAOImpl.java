@@ -1,18 +1,14 @@
-package com.radiance.ai.assistant.dao.info.impl;
+package com.radiance.ai.assistant.dao.exam.impl;
 
-import com.radiance.ai.assistant.common.constant.EncryptConstant;
 import com.radiance.ai.assistant.common.utils.DateUtil;
-import com.radiance.ai.assistant.common.utils.EncryptUtils;
-import com.radiance.ai.assistant.dao.info.AsstInfoStudentDAO;
-import com.radiance.ai.assistant.dao.info.AsstInfoTeacherDAO;
-import com.radiance.ai.assistant.domain.dos.info.AsstInfoStudentDO;
+import com.radiance.ai.assistant.dao.exam.AsstExamKeywordDAO;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO;
 import com.radiance.ai.assistant.domain.enums.DataStatusEnum;
 import com.radiance.ai.assistant.domain.enums.exam.AsstExamDimensionTypeEnum;
-import com.radiance.ai.assistant.domain.query.info.AsstInfoClassQuery;
-import com.radiance.ai.assistant.domain.query.info.AsstInfoStudentQuery;
-import com.radiance.ai.assistant.mapper.info.AsstInfoStudentMapper;
-import com.radiance.ai.assistant.mapper.info.AsstInfoTeacherMapper;
-import org.apache.commons.lang3.StringUtils;
+import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
+import com.radiance.ai.assistant.domain.query.exam.AsstExamKeywordQuery;
+import com.radiance.ai.assistant.mapper.exam.AsstExamKeywordMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -26,25 +22,22 @@ import java.util.List;
  * @since 1.0.0
  */
 @Repository
-public class AsstInfoStudentDAOImpl implements AsstInfoStudentDAO {
+public class AsstExamKeywordDAOImpl implements AsstExamKeywordDAO {
 
     @Resource
-    private AsstInfoStudentMapper asstInfoStudentMapper;
+    private AsstExamKeywordMapper asstExamKeywordMapper;
 
     @Override
-    public List<AsstInfoStudentDO> list(AsstInfoStudentQuery data) {
+    public List<AsstExamKeywordDO> list(AsstExamKeywordQuery data) {
         if (data.getDataStatus() == null) {
             data.setDataStatus(DataStatusEnum.NORMAL.getValue());
         }
-        return asstInfoStudentMapper.list(data);
+        return asstExamKeywordMapper.list(data);
     }
 
     @Override
-    public int insertBatch(List<AsstInfoStudentDO> list) {
+    public int insertBatch(List<AsstExamKeywordDO> list) {
         list.forEach(e -> {
-            if (StringUtils.isNotBlank(e.getPassword())) {
-                e.setPassword(EncryptUtils.aesEncrypt(e.getPassword(), EncryptConstant.TSINGHUA_MEM_KEY));
-            }
             if (e.getType() == null) {
                 e.setType(AsstExamDimensionTypeEnum.COMMON.getValue());
             }
@@ -61,15 +54,12 @@ public class AsstInfoStudentDAOImpl implements AsstInfoStudentDAO {
                 e.setFinishTime(DateUtil.getNow());
             }
         });
-        return asstInfoStudentMapper.insertBatch(list);
+        return asstExamKeywordMapper.insertBatch(list);
     }
 
     @Override
-    public int updateBatch(List<AsstInfoStudentDO> list) {
+    public int updateBatch(List<AsstExamKeywordDO> list) {
         list.forEach(e -> {
-            if (StringUtils.isNotBlank(e.getPassword())) {
-                e.setPassword(EncryptUtils.aesEncrypt(e.getPassword(), EncryptConstant.TSINGHUA_MEM_KEY));
-            }
             if (e.getUpdateTime() == null) {
                 e.setUpdateTime(DateUtil.getNow());
             }
@@ -77,17 +67,17 @@ public class AsstInfoStudentDAOImpl implements AsstInfoStudentDAO {
                 e.setFinishTime(DateUtil.getNow());
             }
         });
-        return asstInfoStudentMapper.updateBatch(list);
+        return asstExamKeywordMapper.updateBatch(list);
     }
 
     @Override
     public int removeBatch(List<Long> list) {
-        return asstInfoStudentMapper.removeBatch(list);
+        return asstExamKeywordMapper.removeBatch(list);
     }
 
     @Override
     public int deleteBatch(List<Long> list) {
-        return asstInfoStudentMapper.deleteBatch(list);
+        return asstExamKeywordMapper.deleteBatch(list);
     }
 
 }

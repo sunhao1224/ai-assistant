@@ -208,4 +208,31 @@ public class AsstExamController {
         return ResponseVO.success(result);
     }
 
+    @GetMapping("/keyword/list")
+    public ResponseVO keywordList(AsstExamKeywordListDTO asstExamKeywordListDTO) {
+        JSONObject info = new JSONObject();
+        List<AsstExamKeywordDO> list = asstExamBiz.keywordList(asstExamKeywordListDTO);
+        info.put("count", list.size());
+        return ResponseVO.successInfoAndList(info,
+                asstExamMapstruct.asstExamKeywordDoListConvertToAsstExamKeywordVoList(list));
+    }
+
+    @PostMapping("/keyword/insert")
+    public ResponseVO keywordInsert(@RequestBody @Validated AsstExamKeywordInsertDTO asstExamKeywordInsertDTO) {
+        int result = asstExamBiz.keywordInsert(asstExamKeywordInsertDTO);
+        return ResponseVO.success(result == 1 ? "success" : "fail");
+    }
+
+    @PostMapping("/keyword/update")
+    public ResponseVO keywordUpdate(@RequestBody @Validated AsstExamKeywordUpdateDTO asstExamKeywordUpdateDTO) {
+        int result = asstExamBiz.keywordUpdate(asstExamKeywordUpdateDTO);
+        return ResponseVO.success(result == 1 ? "success" : "fail");
+    }
+
+    @PostMapping("/keyword/remove")
+    public ResponseVO keywordDelete(@RequestBody @Validated List<Long> idList) {
+        int result = asstExamBiz.keywordRemove(idList);
+        return ResponseVO.success(result);
+    }
+
 }

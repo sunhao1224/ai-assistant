@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.radiance.ai.assistant.mapper.info.AsstInfoStudentMapper">
+<mapper namespace="com.radiance.ai.assistant.mapper.exam.AsstExamKeywordMapper">
 
-    <resultMap id="BaseResultMap" type="com.radiance.ai.assistant.domain.dos.info.AsstInfoStudentDO">
+    <resultMap id="BaseResultMap" type="com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO">
         <result column="id" property="id"/>
-        <result column="asst_info_class_id" property="asstInfoClassId"/>
+        <result column="asst_exam_answer_id" property="asstExamAnswerId"/>
+        <result column="asst_info_student_id" property="asstInfoStudentId"/>
+        <result column="keyword" property="keyword"/>
         <result column="type" property="type"/>
-        <result column="name" property="name"/>
-        <result column="sex" property="sex"/>
         <result column="group" property="group"/>
-        <result column="description" property="description"/>
-        <result column="political_outlook" property="politicalOutlook"/>
+        <result column="creator" property="creator"/>
         <result column="data_status" property="dataStatus"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -19,14 +18,12 @@
 
     <sql id="base_column_list">
         id,
-        asst_info_class_id,
+        asst_exam_answer_id,
+        asst_info_student_id,
+        keyword,
         type,
-        name,
-        password,
-        sex,
         `group`,
-        description,
-        political_outlook,
+        creator,
         data_status,
         create_time,
         update_time,
@@ -35,31 +32,31 @@
 
     <!-- 列表查询 -->
     <select id="list" resultMap="BaseResultMap"
-            parameterType="com.radiance.ai.assistant.domain.query.exam.AsstExamSubjectQuery">
+            parameterType="com.radiance.ai.assistant.domain.query.exam.AsstExamKeywordQuery">
         SELECT
         <include refid="base_column_list"/>
-        FROM asst_info_student
+        FROM asst_exam_keyword
         <where>
-            <if test="null != data.asstInfoClassId">
-                AND asst_info_class_id = #{data.asstInfoClassId}
+            <if test="null != data.id">
+                AND id = #{data.id}
+            </if>
+            <if test="null != data.asstExamAnswerId">
+                AND asst_exam_answer_id = #{data.asstExamAnswerId}
+            </if>
+            <if test="null != data.asstInfoStudentId">
+                AND asst_info_student_id = #{data.asstInfoStudentId}
+            </if>
+            <if test="null != data.keyword and '' != data.keyword">
+                AND keyword = #{data.keyword}
             </if>
             <if test="null != data.type">
                 AND type = #{data.type}
             </if>
-            <if test="null != data.name and '' != data.name">
-                AND name LIKE concat('%', #{data.name},'%')
-            </if>
-            <if test="null != data.sex">
-                AND sex = #{data.sex}
-            </if>
             <if test="null != data.group and '' != data.group">
                 AND `group` = #{data.group}
             </if>
-            <if test="null != data.description and '' != data.description">
-                AND description = #{data.description}
-            </if>
-            <if test="null != data.politicalOutlook and '' != data.politicalOutlook">
-                AND political_outlook = #{data.politicalOutlook}
+            <if test="null != data.creator and '' != data.creator">
+                AND creator = #{data.creator}
             </if>
             <if test="null != data.dataStatus">
                 AND data_status = #{data.dataStatus}
@@ -70,30 +67,26 @@
 
     <!-- 批量新增 -->
     <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
-            parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamDimensionDO">
-        INSERT INTO asst_info_student(
-            asst_info_class_id,
+            parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO">
+        INSERT INTO asst_exam_keyword(
+            asst_exam_answer_id,
+            asst_info_student_id,
+            keyword,
             type,
-            name,
-            password,
-            sex,
             `group`,
-            description,
-            political_outlook,
+            creator,
             data_status,
             create_time,
             update_time,
             finish_time
         )VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.asstInfoClassId},
+            (#{item.asstExamAnswerId},
+            #{item.asstInfoStudentId},
+            #{item.keyword},
             #{item.type},
-            #{item.name},
-            #{item.password},
-            #{item.sex},
             #{item.group},
-            #{item.description},
-            #{item.politicalOutlook},
+            #{item.creator},
             #{item.dataStatus},
             #{item.createTime},
             #{item.updateTime},
@@ -102,33 +95,27 @@
     </insert>
 
     <!-- 批量更新 -->
-    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamDimensionDO">
+    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO">
         <foreach collection="list" item="item" separator=",">
-            UPDATE asst_info_student
+            UPDATE asst_exam_keyword
             <set>
-                <if test="null != item.asstInfoClassId">
-                    ,asst_info_class_id = #{item.asstInfoClassId}
+                <if test="null != item.asstExamAnswerId">
+                    ,asst_exam_answer_id = #{item.asstExamAnswerId}
+                </if>
+                <if test="null != item.asstInfoStudentId">
+                    ,asst_info_student_id = #{item.asstInfoStudentId}
+                </if>
+                <if test="null != item.keyword and '' != item.keyword">
+                    ,keyword = #{item.keyword}
                 </if>
                 <if test="null != item.type">
                     ,type = #{item.type}
                 </if>
-                <if test="null != item.name and '' != item.name">
-                    ,name = #{item.name}
-                </if>
-                <if test="null != item.password and '' != item.password">
-                    ,password = #{item.password}
-                </if>
-                <if test="null != item.sex">
-                    ,sex = #{item.sex}
-                </if>
                 <if test="null != item.group and '' != item.group">
                     ,`group` = #{item.group}
                 </if>
-                <if test="null != item.description and '' != item.description">
-                    ,description = #{item.description}
-                </if>
-                <if test="null != item.politicalOutlook and '' != item.politicalOutlook">
-                    ,political_outlook = #{item.politicalOutlook}
+                <if test="null != item.creator and '' != item.creator">
+                    ,creator = #{item.creator}
                 </if>
                 <if test="null != item.createTime">
                     ,create_time = #{item.createTime}
@@ -151,7 +138,7 @@
 
     <!-- 批量逻辑删除 -->
     <update id="removeBatch">
-        UPDATE asst_info_student
+        UPDATE asst_exam_keyword
         <set>
             update_time = now(),
             finish_time = now(),
@@ -165,7 +152,7 @@
 
     <!-- 批量物理删除 -->
     <delete id="deleteBatch">
-        DELETE FROM asst_info_student WHERE id IN
+        DELETE FROM asst_exam_keyword WHERE id IN
         <foreach collection="list" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>

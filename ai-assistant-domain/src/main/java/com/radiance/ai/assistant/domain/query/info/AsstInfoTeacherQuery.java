@@ -1,5 +1,6 @@
 package com.radiance.ai.assistant.domain.query.info;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * @since 1.0.0
  */
 @Data
+@Builder
 public class AsstInfoTeacherQuery {
     /**
      * 主键 ID
@@ -29,6 +31,10 @@ public class AsstInfoTeacherQuery {
      * 名称
      */
     private String name;
+    /**
+     * 密码
+     */
+    private String password;
     /**
      * 性别：0-未知，1-男，2-女
      */

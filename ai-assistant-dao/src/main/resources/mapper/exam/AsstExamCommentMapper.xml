@@ -18,7 +18,8 @@
     </resultMap>
 
     <sql id="base_column_list">
-        id,
+        id
+        ,
         asst_exam_answer_id,
         asst_info_teacher_id,
         type,
@@ -74,12 +75,12 @@
     <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
             parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO">
         INSERT INTO asst_exam_comment(
-        asst_exam_answer_id,
-        asst_info_teacher_id,
+            asst_exam_answer_id,
+            asst_info_teacher_id,
             type,
             `group`,
-        original_text,
-        comment,
+            original_text,
+            comment,
             creator,
             data_status,
             create_time,

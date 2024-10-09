@@ -1,6 +1,8 @@
 package com.radiance.ai.assistant.dao.info.impl;
 
+import com.radiance.ai.assistant.common.constant.EncryptConstant;
 import com.radiance.ai.assistant.common.utils.DateUtil;
+import com.radiance.ai.assistant.common.utils.EncryptUtils;
 import com.radiance.ai.assistant.dao.info.AsstInfoClassDAO;
 import com.radiance.ai.assistant.dao.info.AsstInfoTeacherDAO;
 import com.radiance.ai.assistant.domain.dos.info.AsstInfoTeacherDO;
@@ -10,6 +12,7 @@ import com.radiance.ai.assistant.domain.query.info.AsstInfoClassQuery;
 import com.radiance.ai.assistant.domain.query.info.AsstInfoTeacherQuery;
 import com.radiance.ai.assistant.mapper.info.AsstInfoClassMapper;
 import com.radiance.ai.assistant.mapper.info.AsstInfoTeacherMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -39,6 +42,9 @@ public class AsstInfoTeacherDAOImpl implements AsstInfoTeacherDAO {
     @Override
     public int insertBatch(List<AsstInfoTeacherDO> list) {
         list.forEach(e -> {
+            if (StringUtils.isNotBlank(e.getPassword())) {
+                e.setPassword(EncryptUtils.aesEncrypt(e.getPassword(), EncryptConstant.TSINGHUA_MEM_KEY));
+            }
             if (e.getType() == null) {
                 e.setType(AsstExamDimensionTypeEnum.COMMON.getValue());
             }
@@ -61,6 +67,9 @@ public class AsstInfoTeacherDAOImpl implements AsstInfoTeacherDAO {
     @Override
     public int updateBatch(List<AsstInfoTeacherDO> list) {
         list.forEach(e -> {
+            if (StringUtils.isNotBlank(e.getPassword())) {
+                e.setPassword(EncryptUtils.aesEncrypt(e.getPassword(), EncryptConstant.TSINGHUA_MEM_KEY));
+            }
             if (e.getUpdateTime() == null) {
                 e.setUpdateTime(DateUtil.getNow());
             }

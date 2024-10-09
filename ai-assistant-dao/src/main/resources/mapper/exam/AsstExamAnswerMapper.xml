@@ -16,6 +16,7 @@
         <result column="hit_mask" property="hitMask"/>
         <result column="ai_tag" property="aiTag"/>
         <result column="ai_result" property="aiResult"/>
+        <result column="ai_summary" property="aiSummary"/>
         <result column="creator" property="creator"/>
         <result column="data_status" property="dataStatus"/>
         <result column="create_time" property="createTime"/>
@@ -38,6 +39,7 @@
         hit_mask,
         ai_tag,
         ai_result,
+        ai_summary,
         creator,
         data_status,
         create_time,
@@ -94,6 +96,9 @@
             <if test="null != data.aiResult and '' != data.aiResult">
                 AND ai_result = #{data.aiResult}
             </if>
+            <if test="null != data.aiSummary and '' != data.aiSummary">
+                AND ai_summary = #{data.aiSummary}
+            </if>
             <if test="null != data.creator and '' != data.creator">
                 AND creator = #{data.creator}
             </if>
@@ -121,6 +126,7 @@
             hit_mask,
             ai_tag,
             ai_result,
+            ai_summary,
             creator,
             data_status,
             create_time,
@@ -141,6 +147,7 @@
             #{item.hitMask},
             #{item.aiTag},
             #{item.aiResult},
+            #{item.aiSummary},
             #{item.creator},
             #{item.dataStatus},
             #{item.createTime},
@@ -192,6 +199,9 @@
                 </if>
                 <if test="null != item.aiResult and '' != item.aiResult">
                     ,ai_result = #{item.aiResult}
+                </if>
+                <if test="null != item.aiSummary and '' != item.aiSummary">
+                    ,ai_summary = #{item.aiSummary}
                 </if>
                 <if test="null != item.creator and '' != item.creator">
                     ,creator = #{item.creator}

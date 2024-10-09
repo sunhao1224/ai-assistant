@@ -12,6 +12,7 @@
         <result column="answer" property="answer"/>
         <result column="ai_answer" property="aiAnswer"/>
         <result column="prompt" property="prompt"/>
+        <result column="dimension" property="dimension"/>
         <result column="creator" property="creator"/>
         <result column="data_status" property="dataStatus"/>
         <result column="create_time" property="createTime"/>
@@ -29,6 +30,7 @@
         answer,
         ai_answer,
         prompt,
+        dimension,
         creator,
         data_status,
         create_time,
@@ -70,6 +72,9 @@
             <if test="null != data.prompt and '' != data.prompt">
                 AND prompt = #{data.prompt}
             </if>
+            <if test="null != data.dimension and '' != data.dimension">
+                AND dimension = #{data.dimension}
+            </if>
             <if test="null != data.creator and '' != data.creator">
                 AND creator = #{data.creator}
             </if>
@@ -82,7 +87,7 @@
 
     <!-- 批量新增 -->
     <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
-            parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamDimensionDO">
+            parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamPaperDO">
         INSERT INTO asst_exam_paper(
             asst_exam_bank_id,
             asst_info_teacher_id,
@@ -92,6 +97,7 @@
             answer,
             ai_answer,
             prompt,
+            dimension,
             creator,
             data_status,
             create_time,
@@ -107,6 +113,7 @@
             #{item.answer},
             #{item.aiAnswer},
             #{item.prompt},
+            #{item.dimension},
             #{item.creator},
             #{item.dataStatus},
             #{item.createTime},
@@ -116,7 +123,7 @@
     </insert>
 
     <!-- 批量更新 -->
-    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamDimensionDO">
+    <update id="updateBatch" parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamPaperDO">
         <foreach collection="list" item="item" separator=",">
             UPDATE asst_exam_paper
             <set>
@@ -143,6 +150,9 @@
                 </if>
                 <if test="null != item.prompt and '' != item.prompt">
                     ,prompt = #{item.prompt}
+                </if>
+                <if test="null != item.dimension and '' != item.dimension">
+                    ,dimension = #{item.dimension}
                 </if>
                 <if test="null != item.creator and '' != item.creator">
                     ,creator = #{item.creator}

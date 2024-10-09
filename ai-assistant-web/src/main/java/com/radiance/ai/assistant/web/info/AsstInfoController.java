@@ -82,6 +82,13 @@ public class AsstInfoController {
         return ResponseVO.success(result);
     }
 
+    @PostMapping("/teacher/login")
+    public ResponseVO teacherLogin(@RequestBody @Validated AsstInfoTeacherLoginDTO asstInfoTeacherLoginDTO) {
+        return ResponseVO.success(asstInfoMapstruct.asstInfoTeacherDoConvertToAsstInfoTeacherVo(
+                asstInfoBiz.teacherLogin(asstInfoTeacherLoginDTO)));
+    }
+
+
     @GetMapping("/student/list")
     public ResponseVO studentList(AsstInfoStudentListDTO asstInfoStudentListDTO) {
         JSONObject info = new JSONObject();

@@ -103,7 +103,7 @@ public interface AsstExamMapstruct {
 
     AsstExamAnswerDetailVO asstExamAnswerDoConvertToAsstExamAnswerDetailVo(AsstExamAnswerDO asstExamAnswerDO);
 
-    AsstExamCommentQuery asstExamCommentListDtoConvertToAsstExamAnswerQuery(AsstExamCommentListDTO asstExamCommentListDTO);
+    AsstExamCommentQuery asstExamCommentListDtoConvertToAsstExamCommentQuery(AsstExamCommentListDTO asstExamCommentListDTO);
 
     AsstExamCommentDO asstExamCommentInsertDtoConvertToAsstExamCommentDo(AsstExamCommentInsertDTO asstExamCommentInsertDTO);
 
@@ -117,5 +117,20 @@ public interface AsstExamMapstruct {
     AsstExamCommentVO asstExamCommentDoConvertToAsstExamCommentVo(AsstExamCommentDO asstExamCommentDO);
 
     List<AsstExamCommentVO> asstExamCommentDoListConvertToAsstExamCommentVoList(List<AsstExamCommentDO> asstExamCommentDOList);
+
+    AsstExamKeywordQuery asstExamKeywordListDtoConvertToAsstExamKeywordQuery(AsstExamKeywordListDTO asstExamKeywordListDTO);
+
+    AsstExamKeywordDO asstExamKeywordInsertDtoConvertToAsstExamKeywordDo(AsstExamKeywordInsertDTO asstExamKeywordInsertDTO);
+
+    AsstExamKeywordDO asstExamKeywordUpdateDtoConvertToAsstExamKeywordDo(AsstExamKeywordUpdateDTO asstExamKeywordUpdateDTO);
+
+    @Mappings({
+            @Mapping(target = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(target = "updateTime", dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(target = "finishTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    })
+    AsstExamKeywordVO asstExamKeywordDoConvertToAsstExamKeywordVo(AsstExamKeywordDO asstExamKeywordDO);
+
+    List<AsstExamKeywordVO> asstExamKeywordDoListConvertToAsstExamKeywordVoList(List<AsstExamKeywordDO> asstExamKeywordDOList);
 
 }

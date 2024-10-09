@@ -30,6 +30,8 @@ public interface AsstInfoBiz {
 
     int teacherRemove(List<Long> idList);
 
+    AsstInfoTeacherDO teacherLogin(AsstInfoTeacherLoginDTO asstInfoTeacherLoginDTO);
+
     List<AsstInfoStudentDO> studentList(AsstInfoStudentListDTO asstInfoStudentListDTO);
 
     long studentInsert(AsstInfoStudentInsertDTO asstInfoStudentInsertDTO);

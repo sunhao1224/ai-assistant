@@ -7,6 +7,7 @@
         <result column="asst_info_class_id" property="asstInfoClassId"/>
         <result column="type" property="type"/>
         <result column="name" property="name"/>
+        <result column="password" property="password"/>
         <result column="sex" property="sex"/>
         <result column="group" property="group"/>
         <result column="description" property="description"/>
@@ -21,6 +22,7 @@
         asst_info_class_id,
         type,
         name,
+        password,
         sex,
         `group`,
         description,
@@ -37,6 +39,9 @@
         <include refid="base_column_list"/>
         FROM asst_info_teacher
         <where>
+            <if test="null != data.id">
+                AND id = #{data.id}
+            </if>
             <if test="null != data.asstInfoClassId">
                 AND asst_info_class_id = #{data.asstInfoClassId}
             </if>
@@ -69,6 +74,7 @@
             asst_info_class_id,
             type,
             name,
+            password,
             sex,
             `group`,
             description,
@@ -76,11 +82,12 @@
             create_time,
             update_time,
             finish_time
-        )VALUES
+        ) VALUES
         <foreach collection="list" item="item" separator=",">
             (#{item.asstInfoClassId},
             #{item.type},
             #{item.name},
+            #{item.password},
             #{item.sex},
             #{item.group},
             #{item.description},
@@ -104,6 +111,9 @@
                 </if>
                 <if test="null != item.name and '' != item.name">
                     ,name = #{item.name}
+                </if>
+                <if test="null != item.password and '' != item.password">
+                    ,password = #{item.password}
                 </if>
                 <if test="null != item.sex">
                     ,sex = #{item.sex}

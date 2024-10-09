@@ -9,6 +9,8 @@
         <result column="name" property="name"/>
         <result column="group" property="group"/>
         <result column="description" property="description"/>
+        <result column="prompt" property="prompt"/>
+        <result column="dimension" property="dimension"/>
         <result column="creator" property="creator"/>
         <result column="status" property="status"/>
         <result column="data_status" property="dataStatus"/>
@@ -24,6 +26,8 @@
         name,
         `group`,
         description,
+        prompt,
+        dimension,
         creator,
         status,
         data_status,
@@ -54,6 +58,12 @@
             <if test="null != data.description and '' != data.description">
                 AND description = #{data.description}
             </if>
+            <if test="null != data.prompt and '' != data.prompt">
+                AND prompt = #{data.prompt}
+            </if>
+            <if test="null != data.dimension and '' != data.dimension">
+                AND dimension = #{data.dimension}
+            </if>
             <if test="null != data.creator and '' != data.creator">
                 AND creator = #{data.creator}
             </if>
@@ -76,6 +86,8 @@
             name,
             `group`,
             description,
+            prompt,
+            dimension,
             creator,
             status,
             data_status,
@@ -89,6 +101,8 @@
             #{item.name},
             #{item.group},
             #{item.description},
+            #{item.prompt},
+            #{item.dimension},
             #{item.creator},
             #{item.status},
             #{item.dataStatus},
@@ -117,6 +131,12 @@
                 </if>
                 <if test="null != item.description and '' != item.description">
                     ,description = #{item.description}
+                </if>
+                <if test="null != item.prompt and '' != item.prompt">
+                    ,prompt = #{item.prompt}
+                </if>
+                <if test="null != item.dimension and '' != item.dimension">
+                    ,dimension = #{item.dimension}
                 </if>
                 <if test="null != item.creator and '' != item.creator">
                     ,creator = #{item.creator}

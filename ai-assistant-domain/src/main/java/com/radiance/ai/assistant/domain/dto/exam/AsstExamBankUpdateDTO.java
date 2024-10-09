@@ -38,6 +38,14 @@ public class AsstExamBankUpdateDTO {
      */
     private String description;
     /**
+     * prompt
+     */
+    private String prompt;
+    /**
+     * 维度
+     */
+    private String dimension;
+    /**
      * 创建人
      */
     private String creator;

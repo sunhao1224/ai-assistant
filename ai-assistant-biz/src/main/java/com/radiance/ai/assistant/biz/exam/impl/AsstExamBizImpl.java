@@ -14,8 +14,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +51,9 @@ public class AsstExamBizImpl implements AsstExamBiz {
 
     @Resource
     private AsstExamCommentDAO asstExamCommentDAO;
+
+    @Resource
+    private AsstExamKeywordDAO asstExamKeywordDAO;
 
 
     @Override
@@ -254,7 +255,7 @@ public class AsstExamBizImpl implements AsstExamBiz {
 
     @Override
     public List<AsstExamCommentDO> commentList(AsstExamCommentListDTO asstExamCommentListDTO) {
-        return asstExamCommentDAO.list(asstExamMapstruct.asstExamCommentListDtoConvertToAsstExamAnswerQuery(asstExamCommentListDTO));
+        return asstExamCommentDAO.list(asstExamMapstruct.asstExamCommentListDtoConvertToAsstExamCommentQuery(asstExamCommentListDTO));
     }
 
     @Override
@@ -272,6 +273,28 @@ public class AsstExamBizImpl implements AsstExamBiz {
     @Override
     public int commentRemove(List<Long> idList) {
         return asstExamCommentDAO.removeBatch(idList);
+    }
+
+    @Override
+    public List<AsstExamKeywordDO> keywordList(AsstExamKeywordListDTO asstExamKeywordListDTO) {
+        return asstExamKeywordDAO.list(asstExamMapstruct.asstExamKeywordListDtoConvertToAsstExamKeywordQuery(asstExamKeywordListDTO));
+    }
+
+    @Override
+    public int keywordInsert(AsstExamKeywordInsertDTO asstExamKeywordInsertDTO) {
+        AsstExamKeywordDO asstExamKeywordDO = asstExamMapstruct.asstExamKeywordInsertDtoConvertToAsstExamKeywordDo(asstExamKeywordInsertDTO);
+        return asstExamKeywordDAO.insertBatch(Collections.singletonList(asstExamKeywordDO));
+    }
+
+    @Override
+    public int keywordUpdate(AsstExamKeywordUpdateDTO asstExamKeywordUpdateDTO) {
+        AsstExamKeywordDO asstExamKeywordDO = asstExamMapstruct.asstExamKeywordUpdateDtoConvertToAsstExamKeywordDo(asstExamKeywordUpdateDTO);
+        return asstExamKeywordDAO.updateBatch(Collections.singletonList(asstExamKeywordDO));
+    }
+
+    @Override
+    public int keywordRemove(List<Long> idList) {
+        return asstExamKeywordDAO.removeBatch(idList);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.radiance.ai.assistant.biz.info.impl;
 
 import com.radiance.ai.assistant.biz.info.AsstInfoBiz;
+import com.radiance.ai.assistant.common.constant.EncryptConstant;
 import com.radiance.ai.assistant.common.exception.runtime.CommonException;
 import com.radiance.ai.assistant.common.mapstruct.info.AsstInfoMapstruct;
+import com.radiance.ai.assistant.common.utils.EncryptUtils;
 import com.radiance.ai.assistant.dao.info.AsstInfoClassDAO;
 import com.radiance.ai.assistant.dao.info.AsstInfoStudentDAO;
 import com.radiance.ai.assistant.dao.info.AsstInfoTeacherDAO;
@@ -12,6 +14,8 @@ import com.radiance.ai.assistant.domain.dos.info.AsstInfoStudentDO;
 import com.radiance.ai.assistant.domain.dos.info.AsstInfoTeacherDO;
 import com.radiance.ai.assistant.domain.dto.info.*;
 import com.radiance.ai.assistant.domain.enums.ResponseCodeEnum;
+import com.radiance.ai.assistant.domain.query.info.AsstInfoTeacherQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -84,6 +88,40 @@ public class AsstInfoBizImpl implements AsstInfoBiz {
     @Override
     public int teacherRemove(List<Long> idList) {
         return asstInfoTeacherDAO.removeBatch(idList);
+    }
+
+    @Override
+    public AsstInfoTeacherDO teacherLogin(AsstInfoTeacherLoginDTO asstInfoTeacherLoginDTO) {
+        AsstInfoTeacherDO asstInfoTeacherDO = null;
+        if (asstInfoTeacherLoginDTO.getId() == null && StringUtils.isBlank(asstInfoTeacherLoginDTO.getName())) {
+            throw new CommonException(ResponseCodeEnum.PARAM_IS_ERROR, "教师 id 和 name 不能同时为空");
+
+        }
+        AsstInfoTeacherQuery asstInfoTeacherQuery = AsstInfoTeacherQuery.builder().build();
+        if (asstInfoTeacherLoginDTO.getId() != null && StringUtils.isBlank(asstInfoTeacherLoginDTO.getName())) {
+            asstInfoTeacherQuery.setId(asstInfoTeacherLoginDTO.getId());
+        }
+        if (asstInfoTeacherLoginDTO.getId() == null && StringUtils.isNotBlank(asstInfoTeacherLoginDTO.getName())) {
+            asstInfoTeacherQuery.setName(asstInfoTeacherLoginDTO.getName());
+        }
+        if (asstInfoTeacherLoginDTO.getId() != null && StringUtils.isNotBlank(asstInfoTeacherLoginDTO.getName())) {
+            asstInfoTeacherQuery.setId(asstInfoTeacherLoginDTO.getId());
+        }
+        List<AsstInfoTeacherDO> list = asstInfoTeacherDAO.list(asstInfoTeacherQuery);
+        if (list.isEmpty()) {
+            AsstInfoTeacherInsertDTO asstInfoTeacherInsertDTO = new AsstInfoTeacherInsertDTO();
+            asstInfoTeacherInsertDTO.setName(asstInfoTeacherLoginDTO.getName());
+            asstInfoTeacherInsertDTO.setPassword("123456");
+            long id = teacherInsert(asstInfoTeacherInsertDTO);
+            asstInfoTeacherDO = asstInfoTeacherDAO.list(AsstInfoTeacherQuery.builder().id(id).build()).get(0);
+        } else {
+            asstInfoTeacherDO = list.get(0);
+            if (!EncryptUtils.aesEncrypt(asstInfoTeacherLoginDTO.getPassword(), EncryptConstant.TSINGHUA_MEM_KEY)
+                    .equals(asstInfoTeacherDO.getPassword())) {
+                throw new CommonException(ResponseCodeEnum.PARAM_IS_ERROR, "密码错误");
+            }
+        }
+        return asstInfoTeacherDO;
     }
 
     @Override

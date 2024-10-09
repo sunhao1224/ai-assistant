@@ -69,4 +69,12 @@ public interface AsstExamBiz {
 
     int commentRemove(List<Long> idList);
 
+    List<AsstExamKeywordDO> keywordList(AsstExamKeywordListDTO asstExamKeywordListDTO);
+
+    int keywordInsert(AsstExamKeywordInsertDTO asstExamKeywordInsertDTO);
+
+    int keywordUpdate(AsstExamKeywordUpdateDTO asstExamKeywordUpdateDTO);
+
+    int keywordRemove(List<Long> idList);
+
 }

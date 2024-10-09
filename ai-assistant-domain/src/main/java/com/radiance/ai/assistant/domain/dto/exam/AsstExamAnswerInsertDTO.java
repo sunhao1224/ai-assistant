@@ -73,6 +73,10 @@ public class AsstExamAnswerInsertDTO {
      */
     private String aiResult;
     /**
+     * AI 总结要点
+     */
+    private String aiSummary;
+    /**
      * 创建人
      */
     private String creator;
