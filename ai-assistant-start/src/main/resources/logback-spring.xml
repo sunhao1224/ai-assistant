@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- https://github.com/spring-projects/spring-boot/blob/v1.4.2.RELEASE/spring-boot/src/main/resources/org/springframework/boot/logging/logback/defaults.xml -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!--日志输出路径-->
+    <property resource="application.properties"/>
+    <springProperty scope="context" name="CUSTOM_LOG_PATH" source="logback.loghome"/>
+
+    <property name="APP_NAME" value="ai-assistant"/>
+    <property name="LOG_PATH" value="${CUSTOM_LOG_PATH:-${LOG_HOME:-${user.home}/${APP_NAME}/logs}}"/>
+    <property name="DEBUG_LOG_FILE" value="${LOG_PATH}/app_debug.log"/>
+    <property name="WARN_LOG_FILE" value="${LOG_PATH}/app_warn.log"/>
+    <property name="ERROR_LOG_FILE" value="${LOG_PATH}/app_error.log"/>
+    <property name="INFO_LOG_FILE" value="${LOG_PATH}/app_info.log"/>
+    <property name="ALL_LOG_FILE" value="${LOG_PATH}/app_all.log"/>
+
+    <property name="CUS_FILE_LOG_PATTERN"
+              value="${CUS_FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} [%X{gsid}] ${PID:- } --- [%t] %C{39}.%M: %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) [%X{gsid}] ${PID:- } --- %clr([%t]){yellow} %C{39}.%M: %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!--调试日志appender-->
+    <appender name="DEBUG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>debug</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <file>${DEBUG_LOG_FILE}</file>
+        <encoder>
+            <pattern>${CUS_FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${DEBUG_LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!--业务日志appender-->
+    <appender name="INFO"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <file>${INFO_LOG_FILE}</file>
+        <encoder>
+            <pattern>${CUS_FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${INFO_LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!--警告日志appender-->
+    <appender name="WARN"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <file>${WARN_LOG_FILE}</file>
+        <encoder>
+            <pattern>${CUS_FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${WARN_LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!--错误日志appender-->
+    <appender name="ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <file>${ERROR_LOG_FILE}</file>
+        <encoder>
+            <pattern>${CUS_FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ERROR_LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!--所有日志appender-->
+    <appender name="ALL"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${ALL_LOG_FILE}</file>
+        <encoder>
+            <pattern>${CUS_FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ALL_LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!--控制台日志的异步记录-->
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1048576</queueSize>
+        <!-- 新增这行为了打印栈堆信息 -->
+        <includeCallerData>true</includeCallerData>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <!--调试日志的异步记录-->
+    <appender name="DEBUG_ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1048576</queueSize>
+        <!-- 新增这行为了打印栈堆信息 -->
+        <includeCallerData>true</includeCallerData>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="DEBUG"/>
+    </appender>
+
+    <!--业务日志的异步记录-->
+    <appender name="INFO_ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1048576</queueSize>
+        <!-- 新增这行为了打印栈堆信息 -->
+        <includeCallerData>true</includeCallerData>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="INFO"/>
+    </appender>
+
+    <!--警告日志的异步记录-->
+    <appender name="WARN_ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1048576</queueSize>
+        <!-- 新增这行为了打印栈堆信息 -->
+        <includeCallerData>true</includeCallerData>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="WARN"/>
+    </appender>
+
+    <!--错误日志的异步记录-->
+    <appender name="ERROR_ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1048576</queueSize>
+        <!-- 新增这行为了打印栈堆信息 -->
+        <includeCallerData>true</includeCallerData>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="ERROR"/>
+    </appender>
+
+    <!--所有日志的异步记录-->
+    <appender name="ALL_ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1048576</queueSize>
+        <!-- 新增这行为了打印栈堆信息 -->
+        <includeCallerData>true</includeCallerData>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="ALL"/>
+    </appender>
+
+<!--    <appender name="schedulerxLog" class="com.alibaba.schedulerx.worker.log.appender.SchedulerxLogbackAppender">-->
+<!--        <timeFormat>yyyy-MM-dd'T'HH:mmZ</timeFormat>-->
+<!--        <timeZone>UTC</timeZone>-->
+<!--    </appender>-->
+
+
+    <springProfile name="local,test">
+        <root level="INFO">
+            <appender-ref ref="ASYNC_CONSOLE"/>
+            <appender-ref ref="DEBUG_ASYNC_FILE"/>
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="WARN_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+            <appender-ref ref="ALL_ASYNC_FILE"/>
+<!--            <appender-ref ref="schedulerxLog"/>-->
+        </root>
+    </springProfile>
+    <springProfile name="daily,prepub">
+        <root level="INFO">
+            <appender-ref ref="DEBUG_ASYNC_FILE"/>
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="WARN_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+            <appender-ref ref="ALL_ASYNC_FILE"/>
+<!--            <appender-ref ref="schedulerxLog"/>-->
+            <if condition='p("email.appender.enable").equals("true")'>
+                <then>
+                    <appender-ref ref="emailAppender"/>
+                </then>
+            </if>
+        </root>
+    </springProfile>
+    <springProfile name="publish">
+        <root level="INFO">
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="WARN_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+            <appender-ref ref="ALL_ASYNC_FILE"/>
+<!--            <appender-ref ref="schedulerxLog"/>-->
+            <if condition='p("email.appender.enable").equals("true")'>
+                <then>
+                    <appender-ref ref="emailAppender"/>
+                </then>
+            </if>
+        </root>
+    </springProfile>
+</configuration>
