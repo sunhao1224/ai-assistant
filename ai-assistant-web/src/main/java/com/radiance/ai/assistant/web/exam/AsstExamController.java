@@ -181,6 +181,14 @@ public class AsstExamController {
         return ResponseVO.success(result > 0 ? "success" : "fail");
     }
 
+    @GetMapping("/answer/statistics/level")
+    public ResponseVO answerStatisticsLevel(AsstExamAnswerStatisticsLevelDTO asstExamAnswerStatisticsLevelDTO) {
+        JSONObject info = new JSONObject();
+        List<AsstExamAnswerStatisticsLevelDO> list = asstExamBiz.answerStatisticsLevel(asstExamAnswerStatisticsLevelDTO);
+        info.put("count", list.size());
+        return ResponseVO.successInfoAndList(info, list);
+    }
+
     @GetMapping("/comment/list")
     public ResponseVO commentList(AsstExamCommentListDTO asstExamCommentListDTO) {
         JSONObject info = new JSONObject();
@@ -234,5 +242,19 @@ public class AsstExamController {
         int result = asstExamBiz.keywordRemove(idList);
         return ResponseVO.success(result);
     }
+
+    @GetMapping("/keyword/statistics")
+    public ResponseVO keywordStatistics(AsstExamKeywordStatisticsDTO asstExamKeywordStatisticsDTO) {
+        List<AsstExamKeywordStatisticsDO> result =  asstExamBiz.keywordStatistics(asstExamKeywordStatisticsDTO);
+        JSONObject info = new JSONObject();
+        info.put("count", result.size());
+        return ResponseVO.successInfoAndList(info, result);
+    }
+
+//    @GetMapping("/statistics/list")
+//    public ResponseVO statisticsList(AsstExamStatisticsListDTO asstExamStatisticsListDTO) {
+//
+//        return ResponseVO.success("success");
+//    }
 
 }

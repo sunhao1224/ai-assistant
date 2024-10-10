@@ -4,6 +4,8 @@ import com.radiance.ai.assistant.common.utils.DateUtil;
 import com.radiance.ai.assistant.dao.exam.AsstExamAnswerDAO;
 import com.radiance.ai.assistant.dao.exam.AsstExamPaperDAO;
 import com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerStatisticsLevelDO;
+import com.radiance.ai.assistant.domain.dto.exam.AsstExamAnswerStatisticsLevelDTO;
 import com.radiance.ai.assistant.domain.enums.DataStatusEnum;
 import com.radiance.ai.assistant.domain.enums.exam.AsstExamDimensionTypeEnum;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamAnswerQuery;
@@ -13,6 +15,7 @@ import com.radiance.ai.assistant.mapper.exam.AsstExamPaperMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -84,6 +87,11 @@ public class AsstExamAnswerDAOImpl implements AsstExamAnswerDAO {
     @Override
     public int deleteByAsstExamBankId(List<Long> list) {
         return asstExamAnswerMapper.deleteByAsstExamBankId(list);
+    }
+
+    @Override
+    public List<AsstExamAnswerStatisticsLevelDO> answerStatisticsLevel(Long asstExamBankId) {
+        return asstExamAnswerMapper.answerStatisticsLevel(asstExamBankId);
     }
 
 }

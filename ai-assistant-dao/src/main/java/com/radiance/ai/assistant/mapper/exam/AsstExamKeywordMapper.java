@@ -1,13 +1,13 @@
 package com.radiance.ai.assistant.mapper.exam;
 
-import com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO;
 import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO;
-import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordStatisticsDO;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamKeywordQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 考试评论 Mapper 层
@@ -38,4 +38,5 @@ public interface AsstExamKeywordMapper {
 
     int deleteBatch(@Param("list") List<Long> list);
 
+    List<AsstExamKeywordStatisticsDO> statistics(@Param("set") Set<Long> set);
 }

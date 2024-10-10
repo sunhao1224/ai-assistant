@@ -5,6 +5,7 @@ import com.radiance.ai.assistant.common.mapstruct.exam.AsstExamMapstruct;
 import com.radiance.ai.assistant.dao.exam.*;
 import com.radiance.ai.assistant.domain.dos.exam.*;
 import com.radiance.ai.assistant.domain.dto.exam.*;
+import com.radiance.ai.assistant.domain.query.exam.AsstExamAnswerQuery;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamPaperQuery;
 import com.radiance.ai.assistant.domain.vo.exam.AsstExamAnswerDetailVO;
@@ -14,10 +15,7 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -254,6 +252,11 @@ public class AsstExamBizImpl implements AsstExamBiz {
     }
 
     @Override
+    public List<AsstExamAnswerStatisticsLevelDO> answerStatisticsLevel(AsstExamAnswerStatisticsLevelDTO asstExamAnswerStatisticsLevelDTO) {
+        return asstExamAnswerDAO.answerStatisticsLevel(asstExamAnswerStatisticsLevelDTO.getAsstExamBankId());
+    }
+
+    @Override
     public List<AsstExamCommentDO> commentList(AsstExamCommentListDTO asstExamCommentListDTO) {
         return asstExamCommentDAO.list(asstExamMapstruct.asstExamCommentListDtoConvertToAsstExamCommentQuery(asstExamCommentListDTO));
     }
@@ -295,6 +298,14 @@ public class AsstExamBizImpl implements AsstExamBiz {
     @Override
     public int keywordRemove(List<Long> idList) {
         return asstExamKeywordDAO.removeBatch(idList);
+    }
+
+    @Override
+    public List<AsstExamKeywordStatisticsDO> keywordStatistics(AsstExamKeywordStatisticsDTO asstExamKeywordStatisticsDTO) {
+        Long asstExamBankId = asstExamKeywordStatisticsDTO.getAsstExamBankId();
+        List<AsstExamAnswerDO> asstExamAnswerDOList = asstExamAnswerDAO.list(AsstExamAnswerQuery.builder().asstExamBankId(asstExamBankId).build());
+        Set<Long> asstExamAnswerIdSet = asstExamAnswerDOList.stream().map(AsstExamAnswerDO::getAsstInfoStudentId).collect(Collectors.toSet());
+        return asstExamKeywordDAO.statistics(asstExamAnswerIdSet);
     }
 
 }

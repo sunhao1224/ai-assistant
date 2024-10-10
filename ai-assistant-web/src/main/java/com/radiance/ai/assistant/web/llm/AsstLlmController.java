@@ -114,6 +114,10 @@ public class AsstLlmController {
         return ResponseVO.success(douBaoLlmBiz.promptGenerate(promptGenerateDTO.getContent()));
     }
 
+    @GetMapping("/doubao/prompt/generate2")
+    public ResponseVO doubaoPromptGenerate2(@RequestParam(value = "content") String content) {
+        return ResponseVO.success(douBaoLlmBiz.promptGenerate2(content));
+    }
 
 
 }

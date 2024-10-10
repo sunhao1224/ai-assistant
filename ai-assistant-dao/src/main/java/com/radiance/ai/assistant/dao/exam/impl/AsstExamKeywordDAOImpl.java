@@ -2,17 +2,17 @@ package com.radiance.ai.assistant.dao.exam.impl;
 
 import com.radiance.ai.assistant.common.utils.DateUtil;
 import com.radiance.ai.assistant.dao.exam.AsstExamKeywordDAO;
-import com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO;
 import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordStatisticsDO;
 import com.radiance.ai.assistant.domain.enums.DataStatusEnum;
 import com.radiance.ai.assistant.domain.enums.exam.AsstExamDimensionTypeEnum;
-import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamKeywordQuery;
 import com.radiance.ai.assistant.mapper.exam.AsstExamKeywordMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 考试维度数据层接口实现类
@@ -78,6 +78,11 @@ public class AsstExamKeywordDAOImpl implements AsstExamKeywordDAO {
     @Override
     public int deleteBatch(List<Long> list) {
         return asstExamKeywordMapper.deleteBatch(list);
+    }
+
+    @Override
+    public List<AsstExamKeywordStatisticsDO> statistics(Set<Long> asstExamAnswerIdSet) {
+        return asstExamKeywordMapper.statistics(asstExamAnswerIdSet);
     }
 
 }

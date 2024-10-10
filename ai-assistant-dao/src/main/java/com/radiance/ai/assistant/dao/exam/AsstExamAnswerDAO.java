@@ -1,6 +1,8 @@
 package com.radiance.ai.assistant.dao.exam;
 
 import com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerStatisticsLevelDO;
+import com.radiance.ai.assistant.domain.dto.exam.AsstExamAnswerStatisticsLevelDTO;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamAnswerQuery;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamPaperQuery;
 
@@ -26,4 +28,6 @@ public interface AsstExamAnswerDAO {
     int deleteBatch(List<Long> list);
 
     int deleteByAsstExamBankId(List<Long> list);
+
+    List<AsstExamAnswerStatisticsLevelDO> answerStatisticsLevel(Long asstExamBankId);
 }

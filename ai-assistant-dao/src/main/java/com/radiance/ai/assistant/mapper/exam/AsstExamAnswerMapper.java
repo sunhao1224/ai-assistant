@@ -1,6 +1,8 @@
 package com.radiance.ai.assistant.mapper.exam;
 
 import com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerDO;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerStatisticsLevelDO;
+import com.radiance.ai.assistant.domain.dto.exam.AsstExamAnswerStatisticsLevelDTO;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamAnswerQuery;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamDimensionQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,5 +39,7 @@ public interface AsstExamAnswerMapper {
 
     int deleteBatch(@Param("list") List<Long> list);
 
-    int deleteByAsstExamBankId(List<Long> list);
+    int deleteByAsstExamBankId(@Param("list") List<Long> list);
+
+    List<AsstExamAnswerStatisticsLevelDO> answerStatisticsLevel(@Param("asstExamBankId") Long asstExamBankId);
 }

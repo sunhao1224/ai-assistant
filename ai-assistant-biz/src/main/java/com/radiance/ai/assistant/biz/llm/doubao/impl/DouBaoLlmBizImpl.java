@@ -1,5 +1,6 @@
 package com.radiance.ai.assistant.biz.llm.doubao.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.radiance.ai.assistant.biz.llm.doubao.DouBaoLlmBiz;
 import com.radiance.ai.assistant.core.llm.doubao.DouBaoLlm;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,135 @@ public class DouBaoLlmBizImpl implements DouBaoLlmBiz {
                 "- 你会以清晰、有条理的方式呈现生成的 prompt，让我能一目了然地明白如何更好地利用大模型进行创作。\n" +
                 "- 不要删除原始 prompt 的内容，只增加 prompt 描述,要对这个 prompt 进行扩展、修改。\n" +
                 "- 输出完善后的 prompt 内容";
-//        String systemContent = "我会给你一个写好的 prompt，需求是你需要识别所有内容，要对这个 prompt 进行扩展、修改，但你不要删原始 prompt 的内容，只增加 prompt 描述，并最终输出优化后的结果";
-//        return douBaoLlm.chat(systemContent, "以下内容都是prompt：" + content);
         String contentClean = content.replaceAll("##", "").replaceAll("###", "");
         return douBaoLlm.chat(systemContent, contentClean);
+    }
+
+    @Override
+    public JSONObject promptGenerate2(String content) {
+        // 推荐生成 prompt
+        String systemContent = "# 角色：你是一个专业的老师 ，现在需要你根据我提供的题目和参考答案，给出对应的(维度,一级指标,二级指标,核心字段召回)json格式的列表,列表长度不能大于6。\n" +
+                "\n" +
+                "##【字段定义】：\n" +
+                "试卷和题目请严格按照如下格式仅输出JSON，不要输出python代码，不要返回多余信息，JSON中有多个字段用顿号【、】区隔：\n" +
+                "## JSON字段：\n" +
+                "{{\n" +
+                "\"exam_dimension_list\":[\n" +
+                "    {{\n" +
+                "        \"dimension_name\": \"维度名称\",\n" +
+                "        \"first_level_index\": \"一级指标\",\n" +
+                "        \"second_level_index\": \"二级指标\",\n" +
+                "        \"core_field_recall\": \"核心字段召回\"\n" +
+                "    }}\n" +
+                "    ...\n" +
+                "    ]\n" +
+                "}}\n" +
+                "\n" +
+                "## 注意事项：\n" +
+                "1. 基于给出的内容，专业和严谨的回答问题。不允许添加任何编造成分。\n" +
+                "\"\"\"\n" +
+                "\n" +
+                "    user_prompt_give_dimension=f\"\"\"\n" +
+                "## 题目：{__question_content}\n" +
+                "## 参考答案：{__standard_answer}\n" +
+                "\"\"\"";
+
+//        String contentClean = content.replaceAll("##", "").replaceAll("###", "");
+        String userContent = "题目：清华MEM\"三位一体\"教学理念是如何实施的？" +
+                "参考答案：- 价值塑造\n" +
+                "  - 校训：自强不息，厚德载物\n" +
+                "  - 归零：自由平等，开放合作\n" +
+                "- 能力培养\n" +
+                "  - 硬实力：机械、控制、电子等\n" +
+                "  - 软实力：穿心能力，沟通能力等\n" +
+                "  - 思维力：系统、逻辑、思辨等\n" +
+                "- 知识传授\n" +
+                "  - 大师讲座：院士、大师等\n" +
+                "  - 专家辅导：名师、名导等\n" +
+                "  - 校友导师：行业大咖、MEM先进等";
+        String prompt = douBaoLlm.chat(systemContent, userContent);
+        JSONObject json = JSONObject.parseObject(prompt);
+        System.out.println(json);
+
+        content = "- 价值营造\n" +
+                "  - 校训：自强不息\n" +
+                "  - 归零：自由平等，开放合作\n" +
+                "- 能力培养\n" +
+                "  - 硬实力：机械、控制、电子等\n" +
+                "  - 软实力：穿心能力\n" +
+                "  - 思维力：系统、逻辑、思辨等\n" +
+                "- 知识传授\n" +
+                "  - 大师讲座：院士、大师等\n" +
+                "  - 校友导师：行业大咖、MEM先进等";
+        String sys = "  system_prompt_give_dimension=f\"\"\"\n" +
+                "# 角色：你是一个专业的课程老师 ，现在需要你批改一套的试卷，需要按照以下【任务要求】执行。\n" +
+                "\n" +
+                "## 【评分规则】：\n" +
+                "1. 总分为100分。\n" +
+                "2. 学生答案需要围绕【维度和指标】内容以及【参考答案】展开，必须包含的核心字段有：{__core_field_recalls}，越贴近得分越高。\n" +
+                "3. 参考答案中的关键名字不能写错，写错需要扣分。\n" +
+                "\n" +
+                "## 维度和指标：元素格式为(维度,一级指标,二级指标）\n" +
+                "{__dimsnsions}\n" +
+                "\n" +
+                "## 考题内容\n" +
+                "{__question_content}\n" +
+                "\n" +
+                "## 参考答案：\n" +
+                "{__standard_answer}\n" +
+                "\n" +
+                "## 得分要点列表\n" +
+                "{__score_key_points}\n" +
+                "\n" +
+                "## 【任务要求】：\n" +
+                "1. ai_score: AI评分。根据【评分规则】评分，最高得分不能超过100分，最低分不小于0分。评分的依据在【ai_score_reason】项中给出。\n" +
+                "2. ai_score_reason: AI评分依据。每道题目的评分原因的内容不能超过100字。\n" +
+                "3. stu_answer_ai_suspicious: AI答案相似度。表示学生答案疑似AI生成的概率，类型为百分数。疑似AI答案的原因在【stu_answer_ai_suspicious_reason】项中给出。\n" +
+                "4. stu_answer_ai_suspicious_reason: 学生答案疑似AI的原因。不超过200字。\n" +
+                "5. ai_score_tags: AI评分标签列表。分别是：\"完美试卷\"、\"高分试卷\"、\"疑似AI\"。其中\"高分试卷\"的给出依据是得分【ai_score】在90分以上，\"疑似AI\"的给出依据是学生答案疑似AI生成可疑度【stu_answer_ai_suspicious】大于80%，\"完美试卷\"的给出依据是【ai_score】在90分以上且学生答案疑似AI生成可疑度【stu_answer_ai_suspicious】小于10%。\n" +
+                "6. ai_answer: AI答案。AI答案不超过300字，AI答案需要根据【考题内容】和【参考答案】给出。\n" +
+                "7. hit_view_list: 学生答案命中得分要点列表。学生答案的要点与符合【得分要点列表】的交集。元素的个数等于【hit_view_count】\n" +
+                "8. stu_answer_score_key_points_match_list: 学生答案命中得分要点的符合度列表。【hit_view_list】中每个要点的符合度，每个元素的类型为百分数，取值越大表示学生答案与得分要点的匹配程度越高。元素的个数等于【hit_view_count】\n" +
+                "9. hit_view_count: 学生答案命中得分要点的个数。【hit_view_list】中元素的个数。\n" +
+                "10. stu_answer_ai_suspicious: 学生答案疑似AI生成可疑度。表示学生答案疑似AI生成的概率，类型为百分数。疑似AI答案的原因在【stu_answer_ai_suspicious_reason】项中给出。\n" +
+                "11. stu_answer_ai_suspicious_reason: 学生答案疑似AI的原因。不超过200字。\n" +
+                "12. stu_characteristics: 学生答案主旨词。\n" +
+                "\n" +
+                "##【字段定义】：\n" +
+                "试卷和题目请严格按照如下格式仅输出JSON，不要输出python代码，不要返回多余信息，JSON中有多个字段用顿号【、】区隔：\n" +
+                "### JSON字段：\n" +
+                "{{\n" +
+                "    \"ai_score\": \"【任务要求】1. ai_score\" ,\n" +
+                "    \"ai_score_reason\": \"【任务要求】2. ai_score_reason\",\n" +
+                "    \"stu_answer_ai_suspicious\": \"【任务要求】3. stu_answer_ai_suspicious\",\n" +
+                "    \"stu_answer_ai_suspicious_reason\": \"【任务要求】4. stu_answer_ai_suspicious_reason\",\n" +
+                "    \"ai_score_tags\": [\n" +
+                "        \"【任务要求】5. ai_score_tags，例如: 完美试卷\",\n" +
+                "    ],\n" +
+                "    \"ai_answer\": \"【任务要求】6. ai_answer\",\n" +
+                "    \"hit_view_list\": [\n" +
+                "        \"【任务要求】7. hit_view_list[0]\",\n" +
+                "        \"【任务要求】7. hit_view_list[1]\",\n" +
+                "    ],\n" +
+                "    \"stu_answer_score_key_points_match_list\": [\n" +
+                "        \"【任务要求】8. stu_answer_score_key_points_match_list[0]\",\n" +
+                "        \"【任务要求】8. stu_answer_score_key_points_match_list[1]\",\n" +
+                "    ],\n" +
+                "    \"hit_view_count\": \"【任务要求】9. hit_view_count\",\n" +
+                "    \"stu_answer_ai_suspicious\": \"【任务要求】10. stu_answer_ai_suspicious\",\n" +
+                "    \"stu_answer_ai_suspicious_reason\":\"【任务要求】11. stu_answer_ai_suspicious_reason\",\n" +
+                "    \"stu_characteristics\":\"【任务要求】12. stu_characteristics\"\n" +
+                "}}\n" +
+                "\n" +
+                "## 注意事项：\n" +
+                "1. 基于给出的内容，专业和严谨的回答问题。不允许在答案中添加任何编造成分。\n" +
+                "\"\"\"\n" +
+                "\n" +
+                "处理学生答案的prompt: " + prompt;
+        String result = douBaoLlm.chat(sys, content);
+        JSONObject json2 = JSONObject.parseObject(result);
+        System.out.println(json2);
+        return json;
     }
 
     @Override

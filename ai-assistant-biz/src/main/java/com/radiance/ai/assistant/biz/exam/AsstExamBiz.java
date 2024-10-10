@@ -61,6 +61,8 @@ public interface AsstExamBiz {
 
     int answerUpload(AsstExamAnswerUploadDTO asstExamAnswerUploadDTO);
 
+    List<AsstExamAnswerStatisticsLevelDO> answerStatisticsLevel(AsstExamAnswerStatisticsLevelDTO asstExamAnswerStatisticsLevelDTO);
+
     List<AsstExamCommentDO> commentList(AsstExamCommentListDTO asstExamCommentListDTO);
 
     int commentInsert(AsstExamCommentInsertDTO asstExamCommentInsertDTO);
@@ -76,5 +78,7 @@ public interface AsstExamBiz {
     int keywordUpdate(AsstExamKeywordUpdateDTO asstExamKeywordUpdateDTO);
 
     int keywordRemove(List<Long> idList);
+
+    List<AsstExamKeywordStatisticsDO> keywordStatistics(AsstExamKeywordStatisticsDTO asstExamKeywordStatisticsDTO);
 
 }

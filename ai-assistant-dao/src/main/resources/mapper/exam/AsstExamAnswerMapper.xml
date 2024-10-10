@@ -108,6 +108,28 @@
         </where>
         ORDER BY update_time DESC
     </select>
+    <select id="answerStatisticsLevel"
+            resultType="com.radiance.ai.assistant.domain.dos.exam.AsstExamAnswerStatisticsLevelDO">
+        SELECT
+            CASE
+                WHEN score >= 90 THEN 'A'
+                WHEN score >= 80 AND score &lt; 90 THEN 'B'
+                WHEN score >= 70 AND score &lt; 80 THEN 'C'
+                WHEN score >= 60 AND score &lt; 70 THEN 'D'
+                WHEN score &lt; 60 THEN 'E'
+                END AS level,
+            COUNT(*) AS count
+        FROM asst_exam_answer
+        WHERE asst_exam_bank_id = #{asstExamBankId}
+        GROUP BY
+            CASE
+                WHEN score >= 90 THEN 'A'
+                WHEN score >= 80 AND score &lt; 90 THEN 'B'
+                WHEN score >= 70 AND score &lt; 80 THEN 'C'
+                WHEN score >= 60 AND score &lt; 70 THEN 'D'
+                WHEN score &lt; 60 THEN 'E'
+            END;
+    </select>
 
     <!-- 批量新增 -->
     <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"

@@ -65,6 +65,17 @@
         ORDER BY update_time DESC
     </select>
 
+    <select id="statistics" resultType="com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordStatisticsDO">
+        SELECT keyword, COUNT(keyword) AS count
+        FROM asst_exam_keyword
+        WHERE asst_exam_answer_id IN
+        <foreach collection="set" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        GROUP BY keyword
+        ORDER BY count DESC
+    </select>
+
     <!-- 批量新增 -->
     <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
             parameterType="com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO">

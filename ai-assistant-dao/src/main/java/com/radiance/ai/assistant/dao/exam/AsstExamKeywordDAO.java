@@ -1,11 +1,11 @@
 package com.radiance.ai.assistant.dao.exam;
 
-import com.radiance.ai.assistant.domain.dos.exam.AsstExamCommentDO;
 import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordDO;
-import com.radiance.ai.assistant.domain.query.exam.AsstExamCommentQuery;
+import com.radiance.ai.assistant.domain.dos.exam.AsstExamKeywordStatisticsDO;
 import com.radiance.ai.assistant.domain.query.exam.AsstExamKeywordQuery;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 考试维度数据层接口
@@ -26,4 +26,5 @@ public interface AsstExamKeywordDAO {
 
     int deleteBatch(List<Long> list);
 
+    List<AsstExamKeywordStatisticsDO> statistics(Set<Long> asstExamAnswerIdSet);
 }
